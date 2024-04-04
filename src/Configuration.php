@@ -53,12 +53,17 @@ class Configuration implements ConfigurationInterface
 
     /**
      * Merge this with another Configuration instance and return.
-     * @param Configuration $config The Configuration instance to merge
+     * @param ContainerInterface $config The Configuration instance to merge
      * @return Configuration New Configuration instance with merged result
      */
-    public function merge(Configuration $config): self
+    public function merge(ConfigurationInterface $config): self
     {
-        return new self($this->merger($this->config, $config->config));
+        return new self($this->merger($this->config, $config->jsonSerialize()));
+    }
+
+    public function jsonSerialize(): object
+    {
+        return $this->config;
     }
 
 
