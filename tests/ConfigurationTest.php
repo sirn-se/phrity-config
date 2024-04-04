@@ -101,7 +101,7 @@ class ConfigurationTest extends TestCase
         ], $config->jsonSerialize());
     }
 
-     public function testMerge(): void
+    public function testMerge(): void
     {
         $reader = new JsonFileReader();
         $config = $reader->createConfiguration(__DIR__ . '/fixtures/complex.json');
