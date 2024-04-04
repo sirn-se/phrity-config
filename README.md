@@ -13,9 +13,9 @@ Install with [Composer](https://getcomposer.org/);
 composer require phrity/config
 ```
 
-## The ConfigurationInterface interface
+## The `ConfigurationInterface` interface
 
-The `Phrity\Config\ConfigurationInterface` implements
+The `Phrity\Config\ConfigurationInterface` extends
 [PSR-11 ContainerInterface](https://www.php-fig.org/psr/psr-11/) and
 [JsonSerializable](https://www.php.net/manual/en/class.jsonserializable) interfaces.
 
@@ -32,7 +32,7 @@ public function __construct(object|array $config);
 public function merge(ConfigurationInterface $config): ConfigurationInterface;
 ```
 
-## The Configuration class
+## The `Configuration` class
 
 The `Phrity\Config\Configuration` class implements the `ConfigurationInterface`.
 
@@ -42,7 +42,7 @@ use Phrity\Config\Configuration;
 // Initiate with object or associative array
 $config = new Configuration(['a' => 23, 'b' => ['bb' => 66]]);
 
-// Check and get from configuration
+// Check and get (case insensitive) from configuration
 $config->has('a'); // => true
 $config->get('a'); // => 23
 
@@ -58,7 +58,7 @@ $config->get('b/bb'); // => 66
 $config->get('a', default: 99); // => 23
 $config->get('c', default: 99); // => 99
 
-// Configurations can be merged (immutable, new isnatnce will be returned)
+// Configurations can be merged (immutable, new instance will be returned)
 $additional = new Configuration(['c' => 12, 'b' => ['bc' => 13]]);
 $merged = $config->merge($additional);
 ```
@@ -67,7 +67,7 @@ $merged = $config->merge($additional);
 
 A number of configuration readers are available.
 
-### JsonReader
+### The `JsonReader` class
 
 The `Phrity\Config\JsonReader` parses provided JSON string.
 
@@ -76,16 +76,16 @@ $reader = new Phrity\Config\JsonReader();
 $config = $reader->createConfiguration(json: '{"a": 23}');
 ```
 
-### JsonFileReader
+### The `JsonFileReader` class
 
 The `Phrity\Config\JsonFileReader` parses a file containing JSON.
 
 ```php
-$reader = new Phrity\Config\JsonReader();
+$reader = new Phrity\Config\JsonFileReader();
 $config = $reader->createConfiguration(path: 'path/to/config.json');
 ```
 
-### YamlFileReader
+### The `YamlFileReader` class
 
 The `Phrity\Config\YamlFileReader` parses a file containing YAML.
 The `symfony/yaml` library must be required to use this reader.
@@ -95,7 +95,7 @@ $reader = new Phrity\Config\YamlFileReader();
 $config = $reader->createConfiguration(path: 'path/to/config.yaml');
 ```
 
-### EnvReader
+### The `EnvReader` class
 
 The `Phrity\Config\EnvReader` parses environment variables.
 
@@ -104,7 +104,7 @@ $reader = new Phrity\Config\EnvReader();
 $config = $reader->createConfiguration();
 ```
 
-## The ConfigurationFactory class
+## The `ConfigurationFactory` class
 
 The `Phrity\Config\ConfigurationFactory` provides shortcuts to create and merge configurations.
 
