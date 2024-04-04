@@ -17,8 +17,14 @@
             "Phrity\\Config\\": "src/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Phrity\\Config\\Test\\": "tests/src/"
+        }
+    },
     "require": {
         "php": "^8.1",
+        "ext-json": "*",
         "phrity/util-accessor": "^1.0",
         "psr/container": "^1.0 | ^2.0"
     },
@@ -26,9 +32,10 @@
         "phpunit/phpunit": "^10.0 | ^11.0",
         "php-coveralls/php-coveralls": "^2.0",
         "phrity/util-errorhandler": "^1.0",
-        "squizlabs/php_codesniffer": "^3.0"
+        "squizlabs/php_codesniffer": "^3.0",
+        "symfony/yaml": "^7.0"
     },
     "suggest": {
-        "ext-json": "Required for loading JSON files"
+        "symfony/yaml": "Required for loading YAML configuration"
     }
 }

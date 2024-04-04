@@ -2,7 +2,7 @@
 
 namespace Phrity\Config;
 
-class Factory
+class ConfigurationFactory
 {
     private string $class;
 
@@ -23,6 +23,12 @@ class Factory
     public function fromJsonFile(string $path): ConfigurationInterface
     {
         $reader = new JsonFileReader(class: $this->class);
+        return $reader->createConfiguration(path: $path);
+    }
+
+    public function fromYamlFile(string $path): ConfigurationInterface
+    {
+        $reader = new YamlFileReader(class: $this->class);
         return $reader->createConfiguration(path: $path);
     }
 
