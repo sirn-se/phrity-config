@@ -1,0 +1,21 @@
+{
+    "string": "str",
+    "object": {
+        "string": "obj-str",
+        "object": {
+            "string": "obj-obj-str"
+        },
+        "array": [
+            "obj-arr-str"
+        ]
+    },
+    "array": [
+        "arr-str",
+        {
+            "string": "arr-obj-str"
+        },
+        [
+            "arr-arr-str"
+        ]
+    ]
+}

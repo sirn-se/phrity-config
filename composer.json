@@ -33,7 +33,7 @@
         "php-coveralls/php-coveralls": "^2.0",
         "phrity/util-errorhandler": "^1.0",
         "squizlabs/php_codesniffer": "^3.0",
-        "symfony/yaml": "^7.0"
+        "symfony/yaml": "^6.0 | ^7.0"
     },
     "suggest": {
         "symfony/yaml": "Required for loading YAML configuration"

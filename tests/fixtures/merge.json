@@ -1,0 +1,14 @@
+{
+    "string": "overwritten-str",
+    "added-string": "added-str",
+    "object": {
+        "string": "overwritten-obj-str",
+        "added-string": "added-obj-str",
+         "array": [
+            "merged-obj-arr-str"
+         ]
+    },
+    "array": [
+        "merged-arr-str"
+    ]
+}

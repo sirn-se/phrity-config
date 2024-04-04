@@ -19,7 +19,7 @@ class Configuration implements ConfigurationInterface
      */
     public function __construct(object|array $config = [])
     {
-        $this->config = $this->normalize($config);
+        $this->config = (object)$this->normalize($config);
     }
 
     /**
@@ -37,7 +37,7 @@ class Configuration implements ConfigurationInterface
         }
         $path = $this->accessorParsePath(strtolower($id), '/');
         $data = $this->accessorGet($this->config, $path, $opt['default'] ?? null);
-        return is_object($data) ? new self($data) : $data;
+        return $data;
     }
 
     /**

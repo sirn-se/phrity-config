@@ -10,6 +10,11 @@ use Symfony\Component\Yaml\Exception\ParseException;
 
 class YamlFileReaderTest extends TestCase
 {
+    public function setUp(): void
+    {
+        unset($GLOBALS['class_exists']);
+    }
+
     public function testYamlFileReader(): void
     {
         $reader = new YamlFileReader();
@@ -61,5 +66,14 @@ class YamlFileReaderTest extends TestCase
         $this->expectException(ParseException::class);
         $this->expectExceptionMessage('A colon cannot be used in an unquoted mapping value');
         $config = $reader->createConfiguration(path: __DIR__ . '/fixtures/invalid.yaml');
+    }
+
+    public function testMissingDependency(): void
+    {
+        $GLOBALS['class_exists'] = false; // Overload core function
+
+        $this->expectException(ReaderException::class);
+        $this->expectExceptionMessage("Dependency 'symfony/yaml' not installed, can not read YAML file.");
+        $reader = new YamlFileReader();
     }
 }
