@@ -13,8 +13,11 @@ class EnvFileReader implements ReaderInterface
     private string $class;
     private Dotenv $parser;
 
-    public function __construct(string $class = Configuration::class, string $prefix = '', string|null $separator = null)
-    {
+    public function __construct(
+        string $class = Configuration::class,
+        string $prefix = '',
+        string|null $separator = null
+    ) {
         if (!class_exists(Dotenv::class)) {
             throw new ReaderException("Dependency 'symfony/dotenv' not installed, can not read .env file.");
         }

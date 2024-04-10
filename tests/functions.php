@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * This file overloads some core function for testing.
+ */
+
 namespace Phrity\Config;
 
 function class_exists(string $class, bool $autoload = true): bool
