@@ -8,6 +8,9 @@ trait TreeTrait
 
     private function toTree(array $data): mixed
     {
+        if (empty($this->separator)) {
+            return $data; // No action
+        }
         $re = "|^([{$this->separator}]*[^{$this->separator}]+){$this->separator}(.+)|";
         $coll = [];
         foreach ($data as $key => $value) {

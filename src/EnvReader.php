@@ -20,6 +20,6 @@ class EnvReader implements ReaderInterface
         if (!is_null($match)) {
             $env = array_intersect_key($env, array_change_key_case(array_flip($match)));
         }
-        return new $this->class(is_null($this->separator) ? $env : $this->toTree($env));
+        return new $this->class($this->toTree($env));
     }
 }
