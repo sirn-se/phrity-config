@@ -85,6 +85,16 @@ $reader = new Phrity\Config\JsonFileReader();
 $config = $reader->createConfiguration(path: 'path/to/config.json');
 ```
 
+### The `YamlReader` class
+
+The `Phrity\Config\YamlReader` parses provided YAML string.
+The `symfony/yaml` library must be required to use this reader.
+
+```php
+$reader = new Phrity\Config\YamlReader();
+$config = $reader->createConfiguration(yaml: 'a: 23');
+```
+
 ### The `YamlFileReader` class
 
 The `Phrity\Config\YamlFileReader` parses a file containing YAML.
@@ -102,6 +112,16 @@ The `Phrity\Config\EnvReader` parses environment variables.
 ```php
 $reader = new Phrity\Config\EnvReader();
 $config = $reader->createConfiguration();
+```
+
+### The `EnvFileReader` class
+
+The `Phrity\Config\EnvFileReader` parses a file containing env data.
+The `symfony/dotenv` library must be required to use this reader.
+
+```php
+$reader = new Phrity\Config\EnvFileReader();
+$config = $reader->createConfiguration(path: 'path/to/.env');
 ```
 
 ## The `ConfigurationFactory` class
@@ -129,4 +149,5 @@ $configMerged = $factory->merge(
 
 | Version | PHP | |
 | --- | --- | --- |
+| `1.1` | `^8.1` | Readers (yaml, env-file) |
 | `1.0` | `^8.1` | Interface, implementation, readers (json, json-file, yaml-file, env), factory |
