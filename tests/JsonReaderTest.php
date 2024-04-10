@@ -4,12 +4,17 @@ declare(strict_types=1);
 
 namespace Phrity\Config;
 
-use JsonException;
 use PHPUnit\Framework\TestCase;
 use Phrity\Config\Test\TestConfiguration;
 
 class JsonReaderTest extends TestCase
 {
+    public function setUp(): void
+    {
+        $GLOBALS['class_exists'] = true;
+        $GLOBALS['is_readable'] = true;
+    }
+
     public function testJsonReader(): void
     {
         $reader = new JsonReader();
@@ -42,8 +47,8 @@ class JsonReaderTest extends TestCase
     {
         $json = '** invalid **';
         $reader = new JsonReader();
-        $this->expectException(JsonException::class);
-        $this->expectExceptionMessage('Syntax error');
+        $this->expectException(ReaderException::class);
+        $this->expectExceptionMessage('JSON: Syntax error');
         $config = $reader->createConfiguration(json: $json);
     }
 }

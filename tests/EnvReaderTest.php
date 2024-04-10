@@ -9,6 +9,12 @@ use Phrity\Config\Test\TestConfiguration;
 
 class EnvReaderTest extends TestCase
 {
+    public function setUp(): void
+    {
+        $GLOBALS['class_exists'] = true;
+        $GLOBALS['is_readable'] = true;
+    }
+
     public function testEnvReader(): void
     {
         $reader = new EnvReader();

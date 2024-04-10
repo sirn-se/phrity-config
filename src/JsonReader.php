@@ -2,6 +2,8 @@
 
 namespace Phrity\Config;
 
+use JsonException;
+
 class JsonReader implements ReaderInterface
 {
     private string $class;
@@ -13,7 +15,11 @@ class JsonReader implements ReaderInterface
 
     public function createConfiguration(string $json = '{}'): ConfigurationInterface
     {
-        $data = json_decode($json, false, 512, JSON_THROW_ON_ERROR);
-        return new $this->class($data);
+        try {
+            $data = json_decode($json, false, 512, JSON_THROW_ON_ERROR);
+            return new $this->class($data);
+        } catch (JsonException $e) {
+            throw new ReaderException("JSON: {$e->getMessage()}");
+        }
     }
 }

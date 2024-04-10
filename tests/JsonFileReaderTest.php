@@ -4,12 +4,17 @@ declare(strict_types=1);
 
 namespace Phrity\Config;
 
-use JsonException;
 use PHPUnit\Framework\TestCase;
 use Phrity\Config\Test\TestConfiguration;
 
 class JsonFileReaderTest extends TestCase
 {
+    public function setUp(): void
+    {
+        $GLOBALS['class_exists'] = true;
+        $GLOBALS['is_readable'] = true;
+    }
+
     public function testJsonFileReader(): void
     {
         $reader = new JsonFileReader();
@@ -53,15 +58,25 @@ class JsonFileReaderTest extends TestCase
     {
         $reader = new JsonFileReader();
         $this->expectException(ReaderException::class);
-        $this->expectExceptionMessage("File 'no/file/here' can not be read.");
+        $this->expectExceptionMessage("File 'no/file/here' not found.");
         $config = $reader->createConfiguration(path: 'no/file/here');
+    }
+
+    public function testFileNotReadable(): void
+    {
+        $GLOBALS['is_readable'] = false; // Overload core function
+
+        $reader = new JsonFileReader();
+        $this->expectException(ReaderException::class);
+        $this->expectExceptionMessage("can not be read.");
+        $config = $reader->createConfiguration(path: __DIR__ . '/fixtures/valid.json');
     }
 
     public function testInvalidInput(): void
     {
         $reader = new JsonFileReader();
-        $this->expectException(JsonException::class);
-        $this->expectExceptionMessage('Syntax error');
+        $this->expectException(ReaderException::class);
+        $this->expectExceptionMessage('JSON: Syntax error');
         $config = $reader->createConfiguration(path: __DIR__ . '/fixtures/invalid.json');
     }
 }

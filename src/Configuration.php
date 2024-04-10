@@ -25,8 +25,8 @@ class Configuration implements ConfigurationInterface
     /**
      * Get config value, optionally with default.
      * @param string $id Config identifier, support path resolve i.e. "my/conf/value"
-     * @param mixed $opt Options
-     *   - mixed $default Return default value if path not set
+     * @param array{default?: mixed} $opt Options
+     *   - default Return default value if path not set
      * @return mixed Requested config value
      * @throws NotFoundException If requested config not set and no default specified
      */

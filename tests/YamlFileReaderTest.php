@@ -12,7 +12,8 @@ class YamlFileReaderTest extends TestCase
 {
     public function setUp(): void
     {
-        unset($GLOBALS['class_exists']);
+        $GLOBALS['class_exists'] = true;
+        $GLOBALS['is_readable'] = true;
     }
 
     public function testYamlFileReader(): void
@@ -55,16 +56,26 @@ class YamlFileReaderTest extends TestCase
     public function testFileNotFound(): void
     {
         $reader = new YamlFileReader();
-        $this->expectException(ParseException::class);
-        $this->expectExceptionMessage('File "no/file/here" does not exist.');
+        $this->expectException(ReaderException::class);
+        $this->expectExceptionMessage("File 'no/file/here' not found.");
         $config = $reader->createConfiguration(path: 'no/file/here');
+    }
+
+    public function testFileNotReadable(): void
+    {
+        $GLOBALS['is_readable'] = false; // Overload core function
+
+        $reader = new YamlFileReader();
+        $this->expectException(ReaderException::class);
+        $this->expectExceptionMessage("can not be read.");
+        $config = $reader->createConfiguration(path: __DIR__ . '/fixtures/valid.yaml');
     }
 
     public function testInvalidInput(): void
     {
         $reader = new YamlFileReader();
-        $this->expectException(ParseException::class);
-        $this->expectExceptionMessage('A colon cannot be used in an unquoted mapping value');
+        $this->expectException(ReaderException::class);
+        $this->expectExceptionMessage('YAML: A colon cannot be used in an unquoted mapping value');
         $config = $reader->createConfiguration(path: __DIR__ . '/fixtures/invalid.yaml');
     }
 
