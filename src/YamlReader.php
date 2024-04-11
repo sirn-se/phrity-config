@@ -10,7 +10,7 @@ class YamlReader implements ReaderInterface
     private string $class;
     private Parser $parser;
 
-    public function __construct(string $class = Configuration::class, string $prefix = '')
+    public function __construct(string $class = Configuration::class)
     {
         if (!class_exists(Parser::class)) {
             throw new ReaderException("Dependency 'symfony/yaml' not installed, can not read YAML file.");
