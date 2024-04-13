@@ -29,6 +29,13 @@ class ConfigurationFactoryTest extends TestCase
         $this->assertInstanceOf(ConfigurationInterface::class, $config);
     }
 
+    public function testFromYaml(): void
+    {
+        $factory = new ConfigurationFactory();
+        $config = $factory->fromYaml('b: 66');
+        $this->assertInstanceOf(ConfigurationInterface::class, $config);
+    }
+
     public function testFromYamlFile(): void
     {
         $factory = new ConfigurationFactory();
@@ -40,6 +47,13 @@ class ConfigurationFactoryTest extends TestCase
     {
         $factory = new ConfigurationFactory();
         $config = $factory->fromEnv();
+        $this->assertInstanceOf(ConfigurationInterface::class, $config);
+    }
+
+    public function testFromEnvFile(): void
+    {
+        $factory = new ConfigurationFactory();
+        $config = $factory->fromEnvFile(path: __DIR__ . '/fixtures/valid.env');
         $this->assertInstanceOf(ConfigurationInterface::class, $config);
     }
 

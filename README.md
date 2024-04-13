@@ -85,6 +85,16 @@ $reader = new Phrity\Config\JsonFileReader();
 $config = $reader->createConfiguration(path: 'path/to/config.json');
 ```
 
+### The `YamlReader` class
+
+The `Phrity\Config\YamlReader` parses provided YAML string.
+The `symfony/yaml` library must be required to use this reader.
+
+```php
+$reader = new Phrity\Config\YamlReader();
+$config = $reader->createConfiguration(yaml: 'a: 23');
+```
+
 ### The `YamlFileReader` class
 
 The `Phrity\Config\YamlFileReader` parses a file containing YAML.
@@ -104,6 +114,16 @@ $reader = new Phrity\Config\EnvReader();
 $config = $reader->createConfiguration();
 ```
 
+### The `EnvFileReader` class
+
+The `Phrity\Config\EnvFileReader` parses a file containing env data.
+The `symfony/dotenv` library must be required to use this reader.
+
+```php
+$reader = new Phrity\Config\EnvFileReader();
+$config = $reader->createConfiguration(path: 'path/to/.env');
+```
+
 ## The `ConfigurationFactory` class
 
 The `Phrity\Config\ConfigurationFactory` provides shortcuts to create and merge configurations.
@@ -113,14 +133,18 @@ $factory = new Phrity\Config\ConfigurationFactory();
 
 $configJson = $factory->fromJson(json: '{"a": 23}');
 $configJsonFile = $factory->fromJsonFile(path: 'path/to/config.json');
+$configYaml = $factory->fromYaml(yaml: 'n: 23');
 $configYamlFile = $factory->fromYamlFile(path: 'path/to/config.yaml');
 $configEnv = $factory->fromEnv();
+$configEnvFile = $factory->fromEnvFile('.env');
 
 $configMerged = $factory->merge(
     $configJson,
     $configJsonFile,
+    $configYaml,
     $configYamlFile,
     $configEnv,
+    $configEnvlFile,
 );
 ```
 
@@ -129,4 +153,5 @@ $configMerged = $factory->merge(
 
 | Version | PHP | |
 | --- | --- | --- |
+| `1.1` | `^8.1` | Readers (yaml, env-file) |
 | `1.0` | `^8.1` | Interface, implementation, readers (json, json-file, yaml-file, env), factory |

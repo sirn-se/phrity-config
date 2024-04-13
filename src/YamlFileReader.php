@@ -2,26 +2,19 @@
 
 namespace Phrity\Config;
 
-use Symfony\Component\Yaml\Yaml;
-
-class YamlFileReader implements ReaderInterface
+class YamlFileReader extends YamlReader implements ReaderInterface
 {
-    private string $class;
-    private string $prefix;
+    use FileTrait;
 
     public function __construct(string $class = Configuration::class, string $prefix = '')
     {
-        if (!class_exists(Yaml::class)) {
-            throw new ReaderException("Dependency 'symfony/yaml' not installed, can not read YAML file.");
-        }
-        $this->class = $class;
+        parent::__construct($class);
         $this->prefix = $prefix;
     }
 
     public function createConfiguration(string $path = 'config.yaml'): ConfigurationInterface
     {
-        $file = "{$this->prefix}{$path}";
-        $data = Yaml::parseFile($file);
-        return new $this->class($data);
+        $content = $this->readFile($path);
+        return parent::createConfiguration($content);
     }
 }
