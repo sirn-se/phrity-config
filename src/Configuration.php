@@ -8,7 +8,7 @@ class Configuration implements ConfigurationInterface
 {
     use AccessorTrait;
 
-    private object $config;
+    protected object $config;
 
 
     /* ---------- Public methods ----------------------------------------------------------------------------------- */
@@ -61,6 +61,10 @@ class Configuration implements ConfigurationInterface
         return new self($this->merger($this->config, $config->jsonSerialize()));
     }
 
+    /**
+     * Return as anonymous onject.
+     * @return As object
+     */
     public function jsonSerialize(): object
     {
         return $this->config;
@@ -69,7 +73,7 @@ class Configuration implements ConfigurationInterface
 
     /* ---------- Private helper methods --------------------------------------------------------------------------- */
 
-    private function normalize(mixed $data): mixed
+    protected function normalize(mixed $data): mixed
     {
         if (is_scalar($data)) {
             return $data;
@@ -87,7 +91,7 @@ class Configuration implements ConfigurationInterface
         return (object)$changed;
     }
 
-    private function merger(object $d1, object $d2)
+    protected function merger(object $d1, object $d2)
     {
         $changed = clone $d1;
         array_walk($d2, function (mixed $value, string $key) use ($changed) {

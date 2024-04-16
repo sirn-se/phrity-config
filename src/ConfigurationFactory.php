@@ -4,8 +4,8 @@ namespace Phrity\Config;
 
 class ConfigurationFactory
 {
-    private string $class;
-    private string $prefix;
+    protected string $class;
+    protected string $prefix;
 
 
     /* ---------- Public methods ----------------------------------------------------------------------------------- */
