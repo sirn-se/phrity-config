@@ -6,7 +6,7 @@ use JsonException;
 
 class JsonReader implements ReaderInterface
 {
-    private string $class;
+    protected string $class;
 
     public function __construct(string $class = Configuration::class)
     {

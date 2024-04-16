@@ -54,6 +54,13 @@ class JsonFileReaderTest extends TestCase
         $this->assertInstanceOf(TestConfiguration::class, $config);
     }
 
+    public function testJsonFileOptional(): void
+    {
+        $reader = new JsonFileReader(optional: true);
+        $config = $reader->createConfiguration(path: 'no/file/here');
+        $this->assertEquals((object)[], $config->jsonSerialize());
+    }
+
     public function testFileNotFound(): void
     {
         $reader = new JsonFileReader();

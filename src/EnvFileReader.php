@@ -10,13 +10,14 @@ class EnvFileReader implements ReaderInterface
     use FileTrait;
     use TreeTrait;
 
-    private string $class;
-    private Dotenv $parser;
+    protected string $class;
+    protected Dotenv $parser;
 
     public function __construct(
         string $class = Configuration::class,
         string $prefix = '',
-        string|null $separator = null
+        string|null $separator = null,
+        bool $optional = false,
     ) {
         if (!class_exists(Dotenv::class)) {
             throw new ReaderException("Dependency 'symfony/dotenv' not installed, can not read .env file.");
@@ -24,12 +25,16 @@ class EnvFileReader implements ReaderInterface
         $this->class = $class;
         $this->separator = $separator;
         $this->prefix = $prefix;
+        $this->optional = $optional;
         $this->parser = new Dotenv();
     }
 
     public function createConfiguration(string $path = '.env', array|null $match = null): ConfigurationInterface
     {
         $content = $this->readFile($path);
+        if (is_null($content)) {
+            return new $this->class();
+        }
         try {
             $env = array_change_key_case($this->parser->parse($content));
             if (!is_null($match)) {

@@ -6,7 +6,7 @@ class EnvReader implements ReaderInterface
 {
     use TreeTrait;
 
-    private string $class;
+    protected string $class;
 
     public function __construct(string $class = Configuration::class, string|null $separator = null)
     {

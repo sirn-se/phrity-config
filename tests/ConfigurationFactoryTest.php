@@ -15,6 +15,13 @@ class ConfigurationFactoryTest extends TestCase
         $this->assertInstanceOf(ConfigurationFactory::class, $factory);
     }
 
+    public function testFromData(): void
+    {
+        $factory = new ConfigurationFactory();
+        $config = $factory->fromData(['a' => 23]);
+        $this->assertInstanceOf(ConfigurationInterface::class, $config);
+    }
+
     public function testFromJson(): void
     {
         $factory = new ConfigurationFactory();
@@ -62,6 +69,17 @@ class ConfigurationFactoryTest extends TestCase
         $factory = new ConfigurationFactory(class: TestConfiguration::class);
         $config = $factory->fromJson('{}');
         $this->assertInstanceOf(TestConfiguration::class, $config);
+    }
+
+    public function testOptional(): void
+    {
+        $factory = new ConfigurationFactory();
+        $config = $factory->fromJsonFile(path: 'no/file/here', optional: true);
+        $this->assertInstanceOf(ConfigurationInterface::class, $config);
+        $config = $factory->fromYamlFile(path: 'no/file/here', optional: true);
+        $this->assertInstanceOf(ConfigurationInterface::class, $config);
+        $config = $factory->fromEnvFile(path: 'no/file/here', optional: true);
+        $this->assertInstanceOf(ConfigurationInterface::class, $config);
     }
 
     public function testMerge(): void

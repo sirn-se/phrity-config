@@ -67,6 +67,24 @@ $merged = $config->merge($additional);
 
 A number of configuration readers are available.
 
+### The `DataReader` class
+
+The `Phrity\Config\DataReader` takes input as associative array, object, or null.
+
+```php
+$reader = new Phrity\Config\DataReader();
+$config = $reader->createConfiguration(data: ['a' => 23]);
+```
+
+Constructor options
+```php
+string $class = Configuration::class // Implementation class to create
+```
+Create options
+```php
+object|array|null $data // Input
+```
+
 ### The `JsonReader` class
 
 The `Phrity\Config\JsonReader` parses provided JSON string.
@@ -76,6 +94,15 @@ $reader = new Phrity\Config\JsonReader();
 $config = $reader->createConfiguration(json: '{"a": 23}');
 ```
 
+Constructor options
+```php
+string $class = Configuration::class // Implementation class to create
+```
+Create options
+```php
+string $json // JSON-string
+```
+
 ### The `JsonFileReader` class
 
 The `Phrity\Config\JsonFileReader` parses a file containing JSON.
@@ -83,6 +110,17 @@ The `Phrity\Config\JsonFileReader` parses a file containing JSON.
 ```php
 $reader = new Phrity\Config\JsonFileReader();
 $config = $reader->createConfiguration(path: 'path/to/config.json');
+```
+
+Constructor options
+```php
+string $class = Configuration::class // Implementation class to create
+string $prefix = '' // Path prefix for files to load
+bool $optional = false // Return empty if file do not exist
+```
+Create options
+```php
+string $path = 'config.json' // Path to JSON file
 ```
 
 ### The `YamlReader` class
@@ -95,6 +133,15 @@ $reader = new Phrity\Config\YamlReader();
 $config = $reader->createConfiguration(yaml: 'a: 23');
 ```
 
+Constructor options
+```php
+string $class = Configuration::class // Implementation class to create
+```
+Create options
+```php
+string $yaml // YAML-string
+```
+
 ### The `YamlFileReader` class
 
 The `Phrity\Config\YamlFileReader` parses a file containing YAML.
@@ -105,6 +152,17 @@ $reader = new Phrity\Config\YamlFileReader();
 $config = $reader->createConfiguration(path: 'path/to/config.yaml');
 ```
 
+Constructor options
+```php
+string $class = Configuration::class // Implementation class to create
+string $prefix = '' // Path prefix for files to load
+bool $optional = false // Return empty if file do not exist
+```
+Create options
+```php
+string $path = 'config.yaml' // Path to YAML file
+```
+
 ### The `EnvReader` class
 
 The `Phrity\Config\EnvReader` parses environment variables.
@@ -112,6 +170,16 @@ The `Phrity\Config\EnvReader` parses environment variables.
 ```php
 $reader = new Phrity\Config\EnvReader();
 $config = $reader->createConfiguration();
+```
+
+Constructor options
+```php
+string $class = Configuration::class // Implementation class to create
+string|null $separator = null // Separator for converting flat name into hierarchy
+```
+Create options
+```php
+array|null $match = null // List of entries to import (all imported if null)
 ```
 
 ### The `EnvFileReader` class
@@ -124,6 +192,19 @@ $reader = new Phrity\Config\EnvFileReader();
 $config = $reader->createConfiguration(path: 'path/to/.env');
 ```
 
+Constructor options
+```php
+string $class = Configuration::class // Implementation class to create
+string $prefix = '' // Path prefix for files to load
+string|null $separator = null // Separator for converting flat name into hierarchy
+bool $optional = false // Return empty if file do not exist
+```
+Create options
+```php
+string $path = '.env' // Path to .env file
+array|null $match = null // List of entries to import (all imported if null)
+```
+
 ## The `ConfigurationFactory` class
 
 The `Phrity\Config\ConfigurationFactory` provides shortcuts to create and merge configurations.
@@ -131,6 +212,7 @@ The `Phrity\Config\ConfigurationFactory` provides shortcuts to create and merge 
 ```php
 $factory = new Phrity\Config\ConfigurationFactory();
 
+$configData = $factory->fromData(data: ['a' => 23]);
 $configJson = $factory->fromJson(json: '{"a": 23}');
 $configJsonFile = $factory->fromJsonFile(path: 'path/to/config.json');
 $configYaml = $factory->fromYaml(yaml: 'n: 23');
@@ -139,6 +221,7 @@ $configEnv = $factory->fromEnv();
 $configEnvFile = $factory->fromEnvFile('.env');
 
 $configMerged = $factory->merge(
+    $configData,
     $configJson,
     $configJsonFile,
     $configYaml,
@@ -153,5 +236,6 @@ $configMerged = $factory->merge(
 
 | Version | PHP | |
 | --- | --- | --- |
+| `1.2` | `^8.1` | Reader (data), all file readers get `optional` option |
 | `1.1` | `^8.1` | Readers (yaml, env-file) |
 | `1.0` | `^8.1` | Interface, implementation, readers (json, json-file, yaml-file, env), factory |

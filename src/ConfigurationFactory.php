@@ -16,15 +16,21 @@ class ConfigurationFactory
         $this->prefix = $prefix;
     }
 
+    public function fromData(object|array|null $data): ConfigurationInterface
+    {
+        $reader = new DataReader(class: $this->class);
+        return $reader->createConfiguration(data: $data);
+    }
+
     public function fromJson(string $json): ConfigurationInterface
     {
         $reader = new JsonReader(class: $this->class);
         return $reader->createConfiguration(json: $json);
     }
 
-    public function fromJsonFile(string $path): ConfigurationInterface
+    public function fromJsonFile(string $path, bool $optional = false): ConfigurationInterface
     {
-        $reader = new JsonFileReader(class: $this->class, prefix: $this->prefix);
+        $reader = new JsonFileReader(class: $this->class, prefix: $this->prefix, optional: $optional);
         return $reader->createConfiguration(path: $path);
     }
 
@@ -34,9 +40,9 @@ class ConfigurationFactory
         return $reader->createConfiguration(yaml: $yaml);
     }
 
-    public function fromYamlFile(string $path): ConfigurationInterface
+    public function fromYamlFile(string $path, bool $optional = false): ConfigurationInterface
     {
-        $reader = new YamlFileReader(class: $this->class, prefix: $this->prefix);
+        $reader = new YamlFileReader(class: $this->class, prefix: $this->prefix, optional: $optional);
         return $reader->createConfiguration(path: $path);
     }
 
@@ -49,9 +55,15 @@ class ConfigurationFactory
     public function fromEnvFile(
         string $path,
         string|null $separator = null,
-        array|null $match = null
+        array|null $match = null,
+        bool $optional = false,
     ): ConfigurationInterface {
-        $reader = new EnvFileReader(class: $this->class, prefix: $this->prefix, separator: $separator);
+        $reader = new EnvFileReader(
+            class: $this->class,
+            prefix: $this->prefix,
+            separator: $separator,
+            optional: $optional
+        );
         return $reader->createConfiguration(path: $path, match: $match);
     }
 
