@@ -73,6 +73,13 @@ class EnvFileReaderTest extends TestCase
         ], $config->jsonSerialize());
     }
 
+    public function testEnvFileOptional(): void
+    {
+        $reader = new EnvFileReader(optional: true);
+        $config = $reader->createConfiguration(path: 'no/file/here');
+        $this->assertEquals((object)[], $config->jsonSerialize());
+    }
+
     public function testFileNotFound(): void
     {
         $reader = new EnvFileReader();

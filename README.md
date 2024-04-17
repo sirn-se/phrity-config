@@ -67,6 +67,15 @@ $merged = $config->merge($additional);
 
 A number of configuration readers are available.
 
+### The `DataReader` class
+
+The `Phrity\Config\DataReader` takes input as associative array, object, or null.
+
+```php
+$reader = new Phrity\Config\DataReader();
+$config = $reader->createConfiguration(data: ['a' => 23]);
+```
+
 ### The `JsonReader` class
 
 The `Phrity\Config\JsonReader` parses provided JSON string.
@@ -131,6 +140,7 @@ The `Phrity\Config\ConfigurationFactory` provides shortcuts to create and merge 
 ```php
 $factory = new Phrity\Config\ConfigurationFactory();
 
+$configData = $factory->fromData(data: ['a' => 23]);
 $configJson = $factory->fromJson(json: '{"a": 23}');
 $configJsonFile = $factory->fromJsonFile(path: 'path/to/config.json');
 $configYaml = $factory->fromYaml(yaml: 'n: 23');
@@ -139,6 +149,7 @@ $configEnv = $factory->fromEnv();
 $configEnvFile = $factory->fromEnvFile('.env');
 
 $configMerged = $factory->merge(
+    $configData,
     $configJson,
     $configJsonFile,
     $configYaml,
@@ -153,5 +164,6 @@ $configMerged = $factory->merge(
 
 | Version | PHP | |
 | --- | --- | --- |
+| `1.2` | `^8.1` | Reader (data), all file-readers get `optional` option |
 | `1.1` | `^8.1` | Readers (yaml, env-file) |
 | `1.0` | `^8.1` | Interface, implementation, readers (json, json-file, yaml-file, env), factory |

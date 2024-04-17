@@ -7,8 +7,8 @@ use Symfony\Component\Yaml\Parser;
 
 class YamlReader implements ReaderInterface
 {
-    private string $class;
-    private Parser $parser;
+    protected string $class;
+    protected Parser $parser;
 
     public function __construct(string $class = Configuration::class)
     {

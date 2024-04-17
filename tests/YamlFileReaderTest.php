@@ -53,6 +53,13 @@ class YamlFileReaderTest extends TestCase
         $this->assertInstanceOf(TestConfiguration::class, $config);
     }
 
+    public function testYamlFileOptional(): void
+    {
+        $reader = new YamlFileReader(optional: true);
+        $config = $reader->createConfiguration(path: 'no/file/here');
+        $this->assertEquals((object)[], $config->jsonSerialize());
+    }
+
     public function testFileNotFound(): void
     {
         $reader = new YamlFileReader();
