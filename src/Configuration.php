@@ -53,7 +53,7 @@ class Configuration implements ConfigurationInterface
 
     /**
      * Merge this with another Configuration instance and return.
-     * @param ContainerInterface $config The Configuration instance to merge
+     * @param ConfigurationInterface $config The Configuration instance to merge
      * @return Configuration New Configuration instance with merged result
      */
     public function merge(ConfigurationInterface $config): self
