@@ -10,8 +10,9 @@ class YamlReader implements ReaderInterface
     protected string $class;
     protected Parser $parser;
 
-    public function __construct(string $class = Configuration::class)
-    {
+    public function __construct(
+        string $class = Configuration::class,
+    ) {
         if (!class_exists(Parser::class)) {
             throw new ReaderException("Dependency 'symfony/yaml' not installed, can not read YAML file.");
         }
@@ -19,8 +20,9 @@ class YamlReader implements ReaderInterface
         $this->parser = new Parser();
     }
 
-    public function createConfiguration(string $yaml = '{}'): ConfigurationInterface
-    {
+    public function createConfiguration(
+        string $yaml = '{}',
+    ): ConfigurationInterface {
         try {
             $data = $this->parser->parse($yaml);
             return new $this->class($data);

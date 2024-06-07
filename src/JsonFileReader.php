@@ -16,8 +16,9 @@ class JsonFileReader extends JsonReader implements ReaderInterface
         $this->optional = $optional;
     }
 
-    public function createConfiguration(string $path = 'config.json'): ConfigurationInterface
-    {
+    public function createConfiguration(
+        string $path = 'config.json',
+    ): ConfigurationInterface {
         $content = $this->readFile($path);
         if (is_null($content)) {
             return new $this->class();

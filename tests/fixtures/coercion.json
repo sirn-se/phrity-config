@@ -1,0 +1,26 @@
+{
+    "null": null,
+    "false": false,
+    "true": true,
+    "integer-0": 0,
+    "integer-1": 1,
+    "integer-2": 2,
+    "float-0": 0.0,
+    "float-1": 1.0,
+    "float-2": 2.0,
+    "string-empty": "",
+    "string-0": "0",
+    "string-1": "1",
+    "string-2": "2",
+    "string-false": "false",
+    "string-true": "true",
+    "string-null": "null",
+    "string-test": "test",
+
+    "object": {
+        "string": "obj-str"
+    },
+    "array": [
+       "arr-str"
+    ]
+}
