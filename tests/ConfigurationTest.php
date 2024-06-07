@@ -232,6 +232,7 @@ class ConfigurationTest extends TestCase
         $this->assertSame(null, $config->get('integer-0', coerce: 'null'));
         $this->assertSame(null, $config->get('float-0', coerce: 'null'));
         $this->assertSame(null, $config->get('string-empty', coerce: 'null'));
+        $this->assertSame(null, $config->get('string-null', coerce: 'null'));
     }
 
     public function testFailedCoercionIntToBool(): void

@@ -165,7 +165,7 @@ class Configuration implements ConfigurationInterface
                         }
                         throw new CoercionException("Failed to coerce {$dataType} {$data} to null");
                     case 'string':
-                        if (strtolower($data), ['', '0', 'null']) {
+                        if (in_array(strtolower($data), ['', '0', 'null'])) {
                             return null;
                         }
                         throw new CoercionException("Failed to coerce {$dataType} '{$data}' to null");
