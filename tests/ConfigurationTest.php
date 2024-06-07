@@ -157,4 +157,251 @@ class ConfigurationTest extends TestCase
             'added-string' => 'added-str',
         ], $merged->jsonSerialize());
     }
+
+    public function testCoercionToBool(): void
+    {
+        $reader = new JsonFileReader();
+        $config = $reader->createConfiguration(__DIR__ . '/fixtures/coercion.json');
+        $this->assertSame(false, $config->get('null', coerce: 'boolean'));
+        $this->assertSame(false, $config->get('false', coerce: 'boolean'));
+        $this->assertSame(true, $config->get('true', coerce: 'boolean'));
+        $this->assertSame(false, $config->get('integer-0', coerce: 'boolean'));
+        $this->assertSame(true, $config->get('integer-1', coerce: 'boolean'));
+        $this->assertSame(false, $config->get('float-0', coerce: 'boolean'));
+        $this->assertSame(true, $config->get('float-1', coerce: 'boolean'));
+        $this->assertSame(false, $config->get('string-empty', coerce: 'boolean'));
+        $this->assertSame(false, $config->get('string-0', coerce: 'boolean'));
+        $this->assertSame(false, $config->get('string-false', coerce: 'boolean'));
+        $this->assertSame(true, $config->get('string-1', coerce: 'boolean'));
+        $this->assertSame(true, $config->get('string-true', coerce: 'boolean'));
+    }
+
+    public function testCoercionToInt(): void
+    {
+        $reader = new JsonFileReader();
+        $config = $reader->createConfiguration(__DIR__ . '/fixtures/coercion.json');
+        $this->assertSame(0, $config->get('null', coerce: 'integer'));
+        $this->assertSame(0, $config->get('false', coerce: 'integer'));
+        $this->assertSame(1, $config->get('true', coerce: 'integer'));
+        $this->assertSame(0, $config->get('integer-0', coerce: 'integer'));
+        $this->assertSame(1, $config->get('integer-1', coerce: 'integer'));
+        $this->assertSame(0, $config->get('float-0', coerce: 'integer'));
+        $this->assertSame(1, $config->get('float-1', coerce: 'integer'));
+        $this->assertSame(2, $config->get('float-2', coerce: 'integer'));
+        $this->assertSame(0, $config->get('string-0', coerce: 'integer'));
+        $this->assertSame(1, $config->get('string-1', coerce: 'integer'));
+        $this->assertSame(2, $config->get('string-2', coerce: 'integer'));
+    }
+
+    public function testCoercionToDouble(): void
+    {
+        $reader = new JsonFileReader();
+        $config = $reader->createConfiguration(__DIR__ . '/fixtures/coercion.json');
+        $this->assertSame(0.0, $config->get('null', coerce: 'double'));
+        $this->assertSame(0.0, $config->get('false', coerce: 'double'));
+        $this->assertSame(1.0, $config->get('true', coerce: 'double'));
+        $this->assertSame(0.0, $config->get('integer-0', coerce: 'double'));
+        $this->assertSame(1.0, $config->get('integer-1', coerce: 'double'));
+        $this->assertSame(0.0, $config->get('float-0', coerce: 'double'));
+        $this->assertSame(1.0, $config->get('float-1', coerce: 'double'));
+        $this->assertSame(2.0, $config->get('float-2', coerce: 'double'));
+        $this->assertSame(0.0, $config->get('string-0', coerce: 'double'));
+        $this->assertSame(1.0, $config->get('string-1', coerce: 'double'));
+        $this->assertSame(2.0, $config->get('string-2', coerce: 'double'));
+    }
+
+    public function testCoercionToString(): void
+    {
+        $reader = new JsonFileReader();
+        $config = $reader->createConfiguration(__DIR__ . '/fixtures/coercion.json');
+        $this->assertSame('null', $config->get('null', coerce: 'string'));
+        $this->assertSame('false', $config->get('false', coerce: 'string'));
+        $this->assertSame('true', $config->get('true', coerce: 'string'));
+        $this->assertSame('0', $config->get('integer-0', coerce: 'string'));
+        $this->assertSame('1', $config->get('integer-1', coerce: 'string'));
+        $this->assertSame('0', $config->get('float-0', coerce: 'string'));
+        $this->assertSame('1', $config->get('float-1', coerce: 'string'));
+    }
+
+    public function testCoercionToNull(): void
+    {
+        $reader = new JsonFileReader();
+        $config = $reader->createConfiguration(__DIR__ . '/fixtures/coercion.json');
+        $this->assertSame(null, $config->get('null', coerce: 'null'));
+        $this->assertSame(null, $config->get('false', coerce: 'null'));
+        $this->assertSame(null, $config->get('integer-0', coerce: 'null'));
+        $this->assertSame(null, $config->get('float-0', coerce: 'null'));
+        $this->assertSame(null, $config->get('string-empty', coerce: 'null'));
+    }
+
+    public function testFailedCoercionIntToBool(): void
+    {
+        $reader = new JsonFileReader();
+        $config = $reader->createConfiguration(__DIR__ . '/fixtures/coercion.json');
+        $this->expectException(CoercionException::class);
+        $this->expectExceptionMessage("Failed to coerce integer 2 to boolean");
+        $config->get('integer-2', coerce: 'boolean');
+    }
+
+    public function testFailedCoercionStringToBool(): void
+    {
+        $reader = new JsonFileReader();
+        $config = $reader->createConfiguration(__DIR__ . '/fixtures/coercion.json');
+        $this->expectException(CoercionException::class);
+        $this->expectExceptionMessage("Failed to coerce string 'test' to boolean");
+        $config->get('string-test', coerce: 'boolean');
+    }
+
+    public function testFailedCoercionArrayToBool(): void
+    {
+        $reader = new JsonFileReader();
+        $config = $reader->createConfiguration(__DIR__ . '/fixtures/coercion.json');
+        $this->expectException(CoercionException::class);
+        $this->expectExceptionMessage("Failed to coerce array to boolean");
+        $config->get('array', coerce: 'boolean');
+    }
+
+    public function testFailedCoercionObjectToBool(): void
+    {
+        $reader = new JsonFileReader();
+        $config = $reader->createConfiguration(__DIR__ . '/fixtures/coercion.json');
+        $this->expectException(CoercionException::class);
+        $this->expectExceptionMessage("Failed to coerce object to boolean");
+        $config->get('object', coerce: 'boolean');
+    }
+
+    public function testFailedCoercionStringToInt(): void
+    {
+        $reader = new JsonFileReader();
+        $config = $reader->createConfiguration(__DIR__ . '/fixtures/coercion.json');
+        $this->expectException(CoercionException::class);
+        $this->expectExceptionMessage("Failed to coerce string 'test' to integer");
+        $config->get('string-test', coerce: 'integer');
+    }
+
+    public function testFailedCoercionArrayToInt(): void
+    {
+        $reader = new JsonFileReader();
+        $config = $reader->createConfiguration(__DIR__ . '/fixtures/coercion.json');
+        $this->expectException(CoercionException::class);
+        $this->expectExceptionMessage("Failed to coerce array to integer");
+        $config->get('array', coerce: 'integer');
+    }
+
+    public function testFailedCoercionObjectToInt(): void
+    {
+        $reader = new JsonFileReader();
+        $config = $reader->createConfiguration(__DIR__ . '/fixtures/coercion.json');
+        $this->expectException(CoercionException::class);
+        $this->expectExceptionMessage("Failed to coerce object to integer");
+        $config->get('object', coerce: 'integer');
+    }
+
+    public function testFailedCoercionStringToDouble(): void
+    {
+        $reader = new JsonFileReader();
+        $config = $reader->createConfiguration(__DIR__ . '/fixtures/coercion.json');
+        $this->expectException(CoercionException::class);
+        $this->expectExceptionMessage("Failed to coerce string 'test' to double");
+        $config->get('string-test', coerce: 'double');
+    }
+
+    public function testFailedCoercionArrayToDouble(): void
+    {
+        $reader = new JsonFileReader();
+        $config = $reader->createConfiguration(__DIR__ . '/fixtures/coercion.json');
+        $this->expectException(CoercionException::class);
+        $this->expectExceptionMessage("Failed to coerce array to double");
+        $config->get('array', coerce: 'double');
+    }
+
+    public function testFailedCoercionObjectToDouble(): void
+    {
+        $reader = new JsonFileReader();
+        $config = $reader->createConfiguration(__DIR__ . '/fixtures/coercion.json');
+        $this->expectException(CoercionException::class);
+        $this->expectExceptionMessage("Failed to coerce object to double");
+        $config->get('object', coerce: 'double');
+    }
+
+    public function testFailedCoercionArrayToString(): void
+    {
+        $reader = new JsonFileReader();
+        $config = $reader->createConfiguration(__DIR__ . '/fixtures/coercion.json');
+        $this->expectException(CoercionException::class);
+        $this->expectExceptionMessage("Failed to coerce array to string");
+        $config->get('array', coerce: 'string');
+    }
+
+    public function testFailedCoercionObjectToString(): void
+    {
+        $reader = new JsonFileReader();
+        $config = $reader->createConfiguration(__DIR__ . '/fixtures/coercion.json');
+        $this->expectException(CoercionException::class);
+        $this->expectExceptionMessage("Failed to coerce object to string");
+        $config->get('object', coerce: 'string');
+    }
+
+    public function testFailedCoercionStringToNull(): void
+    {
+        $reader = new JsonFileReader();
+        $config = $reader->createConfiguration(__DIR__ . '/fixtures/coercion.json');
+        $this->expectException(CoercionException::class);
+        $this->expectExceptionMessage("Failed to coerce string 'test' to null");
+        $config->get('string-test', coerce: 'null');
+    }
+
+    public function testFailedCoercionIntToNull(): void
+    {
+        $reader = new JsonFileReader();
+        $config = $reader->createConfiguration(__DIR__ . '/fixtures/coercion.json');
+        $this->expectException(CoercionException::class);
+        $this->expectExceptionMessage("Failed to coerce integer 1 to null");
+        $config->get('integer-1', coerce: 'null');
+    }
+
+    public function testFailedCoercionDoubleToNull(): void
+    {
+        $reader = new JsonFileReader();
+        $config = $reader->createConfiguration(__DIR__ . '/fixtures/coercion.json');
+        $this->expectException(CoercionException::class);
+        $this->expectExceptionMessage("Failed to coerce double 1 to null");
+        $config->get('float-1', coerce: 'null');
+    }
+
+    public function testFailedCoercionTrueToNull(): void
+    {
+        $reader = new JsonFileReader();
+        $config = $reader->createConfiguration(__DIR__ . '/fixtures/coercion.json');
+        $this->expectException(CoercionException::class);
+        $this->expectExceptionMessage("Failed to coerce boolean 1 to null");
+        $config->get('true', coerce: 'null');
+    }
+
+    public function testFailedCoercionArrayToNull(): void
+    {
+        $reader = new JsonFileReader();
+        $config = $reader->createConfiguration(__DIR__ . '/fixtures/coercion.json');
+        $this->expectException(CoercionException::class);
+        $this->expectExceptionMessage("Failed to coerce array to null");
+        $config->get('array', coerce: 'null');
+    }
+
+    public function testFailedCoercionObjectToNull(): void
+    {
+        $reader = new JsonFileReader();
+        $config = $reader->createConfiguration(__DIR__ . '/fixtures/coercion.json');
+        $this->expectException(CoercionException::class);
+        $this->expectExceptionMessage("Failed to coerce object to null");
+        $config->get('object', coerce: 'null');
+    }
+
+    public function testInvalidCoercionType(): void
+    {
+        $reader = new JsonFileReader();
+        $config = $reader->createConfiguration(__DIR__ . '/fixtures/coercion.json');
+        $this->expectException(CoercionException::class);
+        $this->expectExceptionMessage("Invalid coercion type 'unsupported'");
+        $config->get('object', coerce: 'unsupported');
+    }
 }

@@ -29,8 +29,10 @@ class EnvFileReader implements ReaderInterface
         $this->parser = new Dotenv();
     }
 
-    public function createConfiguration(string $path = '.env', array|null $match = null): ConfigurationInterface
-    {
+    public function createConfiguration(
+        string $path = '.env',
+        array|null $match = null,
+    ): ConfigurationInterface {
         $content = $this->readFile($path);
         if (is_null($content)) {
             return new $this->class();

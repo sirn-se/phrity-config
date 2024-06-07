@@ -25,19 +25,22 @@ class Configuration implements ConfigurationInterface
     /**
      * Get config value, optionally with default.
      * @param string $id Config identifier, support path resolve i.e. "my/conf/value"
-     * @param array{default?: mixed} $opt Options
+     * @param array{default?: mixed, coerce?: string} $opt Options
      *   - default Return default value if path not set
+     *   - coerce Cast type
      * @return mixed Requested config value
      * @throws NotFoundException If requested config not set and no default specified
+     * @throws CoerceException If config could not be coerced
      */
     public function get(string $id, mixed ...$opt): mixed
     {
         if (!$this->has($id) && !isset($opt['default'])) {
             throw new NotFoundException("No configuration entry with id '{$id}'.");
         }
+        $opt = array_merge(['default' => null, 'coerce' => null], $opt);
         $path = $this->accessorParsePath(strtolower($id), '/');
-        $data = $this->accessorGet($this->config, $path, $opt['default'] ?? null);
-        return $data;
+        $data = $this->accessorGet($this->config, $path, $opt['default']);
+        return $opt['coerce'] ? $this->coerce($opt['coerce'], $data) : $data;
     }
 
     /**
@@ -73,9 +76,109 @@ class Configuration implements ConfigurationInterface
 
     /* ---------- Private helper methods --------------------------------------------------------------------------- */
 
+    protected function coerce(string $type, mixed $data): mixed
+    {
+        $dataType = strtolower(gettype($data));
+        if ($dataType == $type) {
+            return $data;
+        }
+        switch ($type) {
+            case 'boolean':
+                switch ($dataType) {
+                    case 'double':
+                    case 'integer':
+                        if ($data === 0 || $data === 0.0) {
+                            return false;
+                        }
+                        if ($data === 1 || $data === 1.0) {
+                            return true;
+                        }
+                        throw new CoercionException("Failed to coerce {$dataType} {$data} to boolean");
+                    case 'string':
+                        if (in_array(strtolower($data), ['', '0', 'false'])) {
+                            return false;
+                        }
+                        if (in_array(strtolower($data), ['1', 'true'])) {
+                            return true;
+                        }
+                        throw new CoercionException("Failed to coerce {$dataType} '{$data}' to boolean");
+                    case 'null':
+                        return false;
+                    default:
+                        throw new CoercionException("Failed to coerce {$dataType} to boolean");
+                }
+            case 'integer':
+                switch ($dataType) {
+                    case 'string':
+                        if (is_numeric($data)) {
+                            return (int)$data;
+                        }
+                        throw new CoercionException("Failed to coerce {$dataType} '{$data}' to integer");
+                    case 'null':
+                        return 0;
+                    case 'double':
+                        return (int)$data;
+                    case 'boolean':
+                        return $data ? 1 : 0;
+                    default:
+                        throw new CoercionException("Failed to coerce {$dataType} to integer");
+                }
+            case 'double':
+                switch ($dataType) {
+                    case 'string':
+                        if (is_numeric($data)) {
+                            return (double)$data;
+                        }
+                        throw new CoercionException("Failed to coerce {$dataType} '{$data}' to double");
+                    case 'null':
+                        return 0.0;
+                    case 'integer':
+                        return (double)$data;
+                    case 'boolean':
+                        return $data ? 1.0 : 0.0;
+                    default:
+                        throw new CoercionException("Failed to coerce {$dataType} to double");
+                }
+            case 'string':
+                switch ($dataType) {
+                    case 'double':
+                    case 'integer':
+                        return (string)$data;
+                    case 'null':
+                        return 'null';
+                    case 'boolean':
+                        return $data ? 'true' : 'false';
+                    default:
+                        throw new CoercionException("Failed to coerce {$dataType} to string");
+                }
+            case 'null':
+                switch ($dataType) {
+                    case 'double':
+                    case 'integer':
+                        if ((double)$data === 0.0) {
+                            return null;
+                        }
+                        throw new CoercionException("Failed to coerce {$dataType} {$data} to null");
+                    case 'boolean':
+                        if ($data === false) {
+                            return null;
+                        }
+                        throw new CoercionException("Failed to coerce {$dataType} {$data} to null");
+                    case 'string':
+                        if (strtolower($data), ['', '0', 'null']) {
+                            return null;
+                        }
+                        throw new CoercionException("Failed to coerce {$dataType} '{$data}' to null");
+                    default:
+                        throw new CoercionException("Failed to coerce {$dataType} to null");
+                }
+        }
+        throw new CoercionException("Invalid coercion type '{$type}'");
+    }
+
     protected function normalize(mixed $data): mixed
     {
-        if (is_scalar($data)) {
+        if (is_scalar($data) || is_null($data)) {
             return $data;
         }
         if (is_array($data) && array_is_list($data)) {
