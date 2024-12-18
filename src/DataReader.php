@@ -12,6 +12,9 @@ class DataReader implements ReaderInterface
         $this->class = $class;
     }
 
+    /**
+     * @param object|array<mixed>|null $data
+     */
     public function createConfiguration(
         object|array|null $data = null,
     ): ConfigurationInterface {

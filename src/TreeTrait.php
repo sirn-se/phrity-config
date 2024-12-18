@@ -6,6 +6,9 @@ trait TreeTrait
 {
     private string|null $separator = null;
 
+    /**
+     * @param array<mixed> $data
+     */
     private function toTree(array $data): mixed
     {
         if (empty($this->separator)) {

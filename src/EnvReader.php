@@ -16,6 +16,9 @@ class EnvReader implements ReaderInterface
         $this->separator = $separator;
     }
 
+    /**
+     * @param array<mixed>|null $match
+     */
     public function createConfiguration(
         array|null $match = null,
     ): ConfigurationInterface {
