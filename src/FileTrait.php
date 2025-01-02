@@ -19,6 +19,6 @@ trait FileTrait
         if (!is_readable($file)) {
             throw new ReaderException("File '{$file}' can not be read.");
         }
-        return file_get_contents($file);
+        return file_get_contents($file) ?: null;
     }
 }

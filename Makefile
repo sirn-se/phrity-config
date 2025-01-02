@@ -5,11 +5,11 @@ all: deps-install
 # DEPENDENCY MANAGEMENT
 
 # Updates dependencies according to lock file
-deps-install: composer.phar
+install: composer.phar
 	./composer.phar --no-interaction install
 
 # Updates dependencies according to json file
-deps-update: composer.phar
+update: composer.phar
 	./composer.phar self-update
 	./composer.phar --no-interaction update
 
@@ -17,8 +17,8 @@ deps-update: composer.phar
 # TESTS AND REPORTS
 
 # Code standard check
-cs-check: composer.lock
-	./vendor/bin/phpcs --standard=PSR1,PSR12 --encoding=UTF-8 --report=full --colors src tests
+cs: composer.lock
+	./vendor/bin/phpcs
 
 # Run tests
 test: composer.lock
@@ -28,6 +28,10 @@ test: composer.lock
 coverage: composer.lock
 	./vendor/bin/phpunit --coverage-clover build/logs/clover.xml
 	./vendor/bin/php-coveralls -v
+
+# Run static analysis
+stan: composer.lock
+	./vendor/bin/phpstan analyse
 
 
 # INITIAL INSTALL

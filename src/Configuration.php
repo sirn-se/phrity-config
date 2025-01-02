@@ -15,7 +15,7 @@ class Configuration implements ConfigurationInterface
 
     /**
      * Create new Configuration insatnce.
-     * @param object|array $config Source config data
+     * @param object|array<mixed> $config Source config data
      */
     public function __construct(object|array $config = [])
     {
@@ -25,12 +25,12 @@ class Configuration implements ConfigurationInterface
     /**
      * Get config value, optionally with default.
      * @param string $id Config identifier, support path resolve i.e. "my/conf/value"
-     * @param array{default?: mixed, coerce?: string} $opt Options
+     * @param mixed ...$opt Options
      *   - default Return default value if path not set
      *   - coerce Cast type
      * @return mixed Requested config value
      * @throws NotFoundException If requested config not set and no default specified
-     * @throws CoerceException If config could not be coerced
+     * @throws CoercionException If config could not be coerced
      */
     public function get(string $id, mixed ...$opt): mixed
     {
@@ -40,7 +40,7 @@ class Configuration implements ConfigurationInterface
         $opt = array_merge(['default' => null, 'coerce' => null], $opt);
         $path = $this->accessorParsePath(strtolower($id), '/');
         $data = $this->accessorGet($this->config, $path, $opt['default']);
-        return $opt['coerce'] ? $this->coerce($opt['coerce'], $data) : $data;
+        return $opt['coerce'] ? $this->coerce((string)$opt['coerce'], $data) : $data;
     }
 
     /**
@@ -56,7 +56,7 @@ class Configuration implements ConfigurationInterface
 
     /**
      * Merge this with another Configuration instance and return.
-     * @param ContainerInterface $config The Configuration instance to merge
+     * @param ConfigurationInterface $config The Configuration instance to merge
      * @return Configuration New Configuration instance with merged result
      */
     public function merge(ConfigurationInterface $config): self
@@ -66,7 +66,7 @@ class Configuration implements ConfigurationInterface
 
     /**
      * Return as anonymous onject.
-     * @return As object
+     * @return object
      */
     public function jsonSerialize(): object
     {
@@ -194,7 +194,7 @@ class Configuration implements ConfigurationInterface
         return (object)$changed;
     }
 
-    protected function merger(object $d1, object $d2)
+    protected function merger(object $d1, object $d2): object
     {
         $changed = clone $d1;
         array_walk($d2, function (mixed $value, string $key) use ($changed) {

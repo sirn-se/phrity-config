@@ -24,6 +24,9 @@ class ConfigurationFactory
         $this->optional = $optional;
     }
 
+    /**
+     * @param object|array<mixed>|null $data
+     */
     public function fromData(
         object|array|null $data,
     ): ConfigurationInterface {
@@ -75,6 +78,10 @@ class ConfigurationFactory
         return $reader->createConfiguration(path: $path);
     }
 
+    /**
+     * @param string|null $separator
+     * @param array<mixed>|null $match
+     */
     public function fromEnv(
         string|null $separator = null,
         array|null $match = null,
@@ -86,6 +93,12 @@ class ConfigurationFactory
         return $reader->createConfiguration(match: $match);
     }
 
+    /**
+     * @param string $path
+     * @param string|null $separator
+     * @param array<mixed>|null $match
+     * @param bool|null $optional
+     */
     public function fromEnvFile(
         string $path,
         string|null $separator = null,
