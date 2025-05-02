@@ -61,7 +61,7 @@ jobs:
         restore-keys: ${{ runner.os }}-composer-
     - name: Install dependencies
       run: composer install --prefer-dist
-    - name: Test
+    - name: Static analysis
       run: vendor/bin/phpstan analyse
 
   cs-check:

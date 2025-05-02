@@ -5,11 +5,18 @@ namespace Phrity\Config;
 use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Parser;
 
+/**
+ * @template T of ConfigurationInterface
+ */
 class YamlReader implements ReaderInterface
 {
+    /** @var class-string<T> $class */
     protected string $class;
     protected Parser $parser;
 
+    /**
+     * @param class-string<T> $class
+     */
     public function __construct(
         string $class = Configuration::class,
     ) {
@@ -20,6 +27,9 @@ class YamlReader implements ReaderInterface
         $this->parser = new Parser();
     }
 
+    /**
+     * @return T
+     */
     public function createConfiguration(
         string $yaml = '{}',
     ): ConfigurationInterface {

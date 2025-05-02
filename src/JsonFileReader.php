@@ -2,10 +2,17 @@
 
 namespace Phrity\Config;
 
+/**
+ * @template T of ConfigurationInterface
+ * @extends JsonReader<T>
+ */
 class JsonFileReader extends JsonReader implements ReaderInterface
 {
     use FileTrait;
 
+    /**
+     * @param class-string<T> $class
+     */
     public function __construct(
         string $class = Configuration::class,
         string $prefix = '',
@@ -16,6 +23,9 @@ class JsonFileReader extends JsonReader implements ReaderInterface
         $this->optional = $optional;
     }
 
+    /**
+     * @return T
+     */
     public function createConfiguration(
         string $path = 'config.json',
     ): ConfigurationInterface {
