@@ -2,8 +2,12 @@
 
 namespace Phrity\Config;
 
+/**
+ * @template T of ConfigurationInterface
+ */
 class ConfigurationFactory
 {
+    /** @var class-string<T> $class */
     protected string $class;
     protected string $prefix;
     protected string|null $separator;
@@ -12,6 +16,9 @@ class ConfigurationFactory
 
     /* ---------- Public methods ----------------------------------------------------------------------------------- */
 
+    /**
+     * @param class-string<T> $class
+     */
     public function __construct(
         string $class = Configuration::class,
         string $prefix = '',

@@ -5,14 +5,21 @@ namespace Phrity\Config;
 use Symfony\Component\Dotenv\Dotenv;
 use Symfony\Component\Dotenv\Exception\FormatException;
 
+/**
+ * @template T of ConfigurationInterface
+ */
 class EnvFileReader implements ReaderInterface
 {
     use FileTrait;
     use TreeTrait;
 
+    /** @var class-string<T> $class */
     protected string $class;
     protected Dotenv $parser;
 
+    /**
+     * @param class-string<T> $class
+     */
     public function __construct(
         string $class = Configuration::class,
         string $prefix = '',
@@ -32,6 +39,7 @@ class EnvFileReader implements ReaderInterface
     /**
      * @param string $path
      * @param array<mixed>|null $match
+     * @return T
      */
     public function createConfiguration(
         string $path = '.env',

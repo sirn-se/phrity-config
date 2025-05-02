@@ -2,12 +2,19 @@
 
 namespace Phrity\Config;
 
+/**
+ * @template T of ConfigurationInterface
+ */
 class EnvReader implements ReaderInterface
 {
     use TreeTrait;
 
+    /** @var class-string<T> $class */
     protected string $class;
 
+    /**
+     * @param class-string<T> $class
+     */
     public function __construct(
         string $class = Configuration::class,
         string|null $separator = null,
@@ -18,6 +25,7 @@ class EnvReader implements ReaderInterface
 
     /**
      * @param array<mixed>|null $match
+     * @return T
      */
     public function createConfiguration(
         array|null $match = null,
