@@ -79,22 +79,8 @@ $config->get('c', default: 99); // => 99
 $config->get('a', coerce: 'string'); // => "23"
 ```
 
-* Target type `boolean`
-  * `0`, `0.0`, `"0"`, `"0.0"`, `""`, `"false"` and `null` will be coerced to `false`
-  * `1`, `1.1`, `"1"`,  `"1.0"` and `"true"` will be coerced to `true`
-* Target types `integer` and `double`
-  * numeric `string` will be coerced to `integer` or `double`
-  * `null` and `false` will be coerced to `0` or `0.0`
-  * `true` will be coerced to `1` or `1.0`
-* Target type `string`
-  * `integer` and `double` will be coerced to numeric `string`
-  * `null `will be coerced to `"null"`
-  * `false` will be coerced to `"false"`
-  * `true` will be coerced to `"true"`
-* Target type `null`
-  * `0`, `0.0`, `"0"`, `"0.0"`, `""`, `"null"` and `false` will be coerced to `null`
-
-Any coercion not specified above will cause a `CoercionException`.
+See [Transformers](https://github.com/sirn-se/phrity-util-transformer) for coerscion options.
+Any coercion not specified will cause a `CoercionException`.
 
 ### Merging configurations
 

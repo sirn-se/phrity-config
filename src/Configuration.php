@@ -20,6 +20,7 @@ class Configuration implements ConfigurationInterface
     public function __construct(object|array $config = [])
     {
         $this->config = (object)$this->normalize($config);
+        $this->accessorTransformer = new CoercionTransformer();
     }
 
     /**
@@ -39,8 +40,9 @@ class Configuration implements ConfigurationInterface
         }
         $opt = array_merge(['default' => null, 'coerce' => null], $opt);
         $path = $this->accessorParsePath(strtolower($id), '/');
-        $data = $this->accessorGet($this->config, $path, $opt['default']);
-        return $opt['coerce'] ? $this->coerce((string)$opt['coerce'], $data) : $data;
+        // @deprecated Remove this backward comability fix
+        $opt['coerce'] = $opt['coerce'] == 'null' ? 'NULL' : $opt['coerce'];
+        return $this->accessorGet($this->config, $path, $opt['default'], $opt['coerce']);
     }
 
     /**
@@ -75,106 +77,6 @@ class Configuration implements ConfigurationInterface
 
 
     /* ---------- Private helper methods --------------------------------------------------------------------------- */
-
-    protected function coerce(string $type, mixed $data): mixed
-    {
-        $dataType = strtolower(gettype($data));
-        if ($dataType == $type) {
-            return $data;
-        }
-        switch ($type) {
-            case 'boolean':
-                switch ($dataType) {
-                    case 'double':
-                    case 'integer':
-                        if ($data === 0 || $data === 0.0) {
-                            return false;
-                        }
-                        if ($data === 1 || $data === 1.0) {
-                            return true;
-                        }
-                        throw new CoercionException("Failed to coerce {$dataType} {$data} to boolean");
-                    case 'string':
-                        if (in_array(strtolower($data), ['', '0', 'false'])) {
-                            return false;
-                        }
-                        if (in_array(strtolower($data), ['1', 'true'])) {
-                            return true;
-                        }
-                        throw new CoercionException("Failed to coerce {$dataType} '{$data}' to boolean");
-                    case 'null':
-                        return false;
-                    default:
-                        throw new CoercionException("Failed to coerce {$dataType} to boolean");
-                }
-            case 'integer':
-                switch ($dataType) {
-                    case 'string':
-                        if (is_numeric($data)) {
-                            return (int)$data;
-                        }
-                        throw new CoercionException("Failed to coerce {$dataType} '{$data}' to integer");
-                    case 'null':
-                        return 0;
-                    case 'double':
-                        return (int)$data;
-                    case 'boolean':
-                        return $data ? 1 : 0;
-                    default:
-                        throw new CoercionException("Failed to coerce {$dataType} to integer");
-                }
-            case 'double':
-                switch ($dataType) {
-                    case 'string':
-                        if (is_numeric($data)) {
-                            return (double)$data;
-                        }
-                        throw new CoercionException("Failed to coerce {$dataType} '{$data}' to double");
-                    case 'null':
-                        return 0.0;
-                    case 'integer':
-                        return (double)$data;
-                    case 'boolean':
-                        return $data ? 1.0 : 0.0;
-                    default:
-                        throw new CoercionException("Failed to coerce {$dataType} to double");
-                }
-            case 'string':
-                switch ($dataType) {
-                    case 'double':
-                    case 'integer':
-                        return (string)$data;
-                    case 'null':
-                        return 'null';
-                    case 'boolean':
-                        return $data ? 'true' : 'false';
-                    default:
-                        throw new CoercionException("Failed to coerce {$dataType} to string");
-                }
-            case 'null':
-                switch ($dataType) {
-                    case 'double':
-                    case 'integer':
-                        if ((double)$data === 0.0) {
-                            return null;
-                        }
-                        throw new CoercionException("Failed to coerce {$dataType} {$data} to null");
-                    case 'boolean':
-                        if ($data === false) {
-                            return null;
-                        }
-                        throw new CoercionException("Failed to coerce {$dataType} {$data} to null");
-                    case 'string':
-                        if (in_array(strtolower($data), ['', '0', 'null'])) {
-                            return null;
-                        }
-                        throw new CoercionException("Failed to coerce {$dataType} '{$data}' to null");
-                    default:
-                        throw new CoercionException("Failed to coerce {$dataType} to null");
-                }
-        }
-        throw new CoercionException("Invalid coercion type '{$type}'");
-    }
 
     protected function normalize(mixed $data): mixed
     {
