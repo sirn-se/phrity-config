@@ -32,7 +32,7 @@ class ConfigurationFactoryTest extends TestCase
     public function testFromJsonFile(): void
     {
         $factory = new ConfigurationFactory();
-        $config = $factory->fromJsonFile(path: __DIR__ . '/fixtures/valid.json');
+        $config = $factory->fromJsonFile(path: __DIR__ . '/../fixtures/valid.json');
         $this->assertInstanceOf(ConfigurationInterface::class, $config);
     }
 
@@ -46,7 +46,7 @@ class ConfigurationFactoryTest extends TestCase
     public function testFromYamlFile(): void
     {
         $factory = new ConfigurationFactory();
-        $config = $factory->fromYamlFile(path: __DIR__ . '/fixtures/valid.yaml');
+        $config = $factory->fromYamlFile(path: __DIR__ . '/../fixtures/valid.yaml');
         $this->assertInstanceOf(ConfigurationInterface::class, $config);
     }
 
@@ -60,7 +60,7 @@ class ConfigurationFactoryTest extends TestCase
     public function testFromEnvFile(): void
     {
         $factory = new ConfigurationFactory();
-        $config = $factory->fromEnvFile(path: __DIR__ . '/fixtures/valid.env');
+        $config = $factory->fromEnvFile(path: __DIR__ . '/../fixtures/valid.env');
         $this->assertInstanceOf(ConfigurationInterface::class, $config);
     }
 
@@ -87,8 +87,8 @@ class ConfigurationFactoryTest extends TestCase
         $factory = new ConfigurationFactory();
         $config = $factory->merge(
             $factory->fromJson('{}'),
-            $factory->fromJsonFile(path: __DIR__ . '/fixtures/valid.json'),
-            $factory->fromYamlFile(path: __DIR__ . '/fixtures/valid.yaml'),
+            $factory->fromJsonFile(path: __DIR__ . '/../fixtures/valid.json'),
+            $factory->fromYamlFile(path: __DIR__ . '/../fixtures/valid.yaml'),
             $factory->fromEnv(),
         );
         $this->assertInstanceOf(ConfigurationInterface::class, $config);

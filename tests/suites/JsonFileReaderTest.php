@@ -21,14 +21,14 @@ class JsonFileReaderTest extends TestCase
         $this->assertInstanceOf(JsonFileReader::class, $reader);
         $this->assertInstanceOf(ReaderInterface::class, $reader);
 
-        $config = $reader->createConfiguration(path: __DIR__ . '/fixtures/valid.json');
+        $config = $reader->createConfiguration(path: __DIR__ . '/../fixtures/valid.json');
         $this->assertInstanceOf(Configuration::class, $config);
     }
 
     public function testJsonFileReaderParse(): void
     {
         $reader = new JsonFileReader();
-        $config = $reader->createConfiguration(path: __DIR__ . '/fixtures/valid.json');
+        $config = $reader->createConfiguration(path: __DIR__ . '/../fixtures/valid.json');
         $this->assertEquals((object)[
             'a' => (object)[
                 'a' => 1,
@@ -42,7 +42,7 @@ class JsonFileReaderTest extends TestCase
 
     public function testJsonFileReaderPrefix(): void
     {
-        $reader = new JsonFileReader(prefix: __DIR__ . '/fixtures/');
+        $reader = new JsonFileReader(prefix: __DIR__ . '/../fixtures/');
         $config = $reader->createConfiguration(path: 'valid.json');
         $this->assertInstanceOf(Configuration::class, $config);
     }
@@ -50,7 +50,7 @@ class JsonFileReaderTest extends TestCase
     public function testJsonFileReaderClass(): void
     {
         $reader = new JsonFileReader(class: TestConfiguration::class);
-        $config = $reader->createConfiguration(path: __DIR__ . '/fixtures/valid.json');
+        $config = $reader->createConfiguration(path: __DIR__ . '/../fixtures/valid.json');
         $this->assertInstanceOf(TestConfiguration::class, $config);
     }
 
@@ -76,7 +76,7 @@ class JsonFileReaderTest extends TestCase
         $reader = new JsonFileReader();
         $this->expectException(ReaderException::class);
         $this->expectExceptionMessage("can not be read.");
-        $config = $reader->createConfiguration(path: __DIR__ . '/fixtures/valid.json');
+        $config = $reader->createConfiguration(path: __DIR__ . '/../fixtures/valid.json');
     }
 
     public function testInvalidInput(): void
@@ -84,6 +84,6 @@ class JsonFileReaderTest extends TestCase
         $reader = new JsonFileReader();
         $this->expectException(ReaderException::class);
         $this->expectExceptionMessage('JSON: Syntax error');
-        $config = $reader->createConfiguration(path: __DIR__ . '/fixtures/invalid.json');
+        $config = $reader->createConfiguration(path: __DIR__ . '/../fixtures/invalid.json');
     }
 }
