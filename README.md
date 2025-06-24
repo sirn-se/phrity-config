@@ -130,6 +130,7 @@ $configMerged = $factory->merge(
 
 | Version | PHP | |
 | --- | --- | --- |
+| `1.4` | `^8.1` | Transfomers |
 | `1.3` | `^8.1` | Coerce option |
 | `1.2` | `^8.1` | Reader (data), all file-readers get `optional` option |
 | `1.1` | `^8.1` | Readers (yaml, env-file) |
