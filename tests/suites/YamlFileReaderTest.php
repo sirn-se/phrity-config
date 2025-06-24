@@ -22,14 +22,14 @@ class YamlFileReaderTest extends TestCase
         $this->assertInstanceOf(YamlFileReader::class, $reader);
         $this->assertInstanceOf(ReaderInterface::class, $reader);
 
-        $config = $reader->createConfiguration(path: __DIR__ . '/fixtures/valid.yaml');
+        $config = $reader->createConfiguration(path: __DIR__ . '/../fixtures/valid.yaml');
         $this->assertInstanceOf(Configuration::class, $config);
     }
 
     public function testYamlFileReaderParse(): void
     {
         $reader = new YamlFileReader();
-        $config = $reader->createConfiguration(path: __DIR__ . '/fixtures/valid.yaml');
+        $config = $reader->createConfiguration(path: __DIR__ . '/../fixtures/valid.yaml');
         $this->assertEquals((object)[
             'a' => (object)[
                 'a' => 1,
@@ -41,7 +41,7 @@ class YamlFileReaderTest extends TestCase
 
     public function testYamlFileReaderPrefix(): void
     {
-        $reader = new YamlFileReader(prefix: __DIR__ . '/fixtures/');
+        $reader = new YamlFileReader(prefix: __DIR__ . '/../fixtures/');
         $config = $reader->createConfiguration(path: 'valid.yaml');
         $this->assertInstanceOf(Configuration::class, $config);
     }
@@ -49,7 +49,7 @@ class YamlFileReaderTest extends TestCase
     public function testYamlFileReaderClass(): void
     {
         $reader = new YamlFileReader(class: TestConfiguration::class);
-        $config = $reader->createConfiguration(path: __DIR__ . '/fixtures/valid.yaml');
+        $config = $reader->createConfiguration(path: __DIR__ . '/../fixtures/valid.yaml');
         $this->assertInstanceOf(TestConfiguration::class, $config);
     }
 
@@ -75,7 +75,7 @@ class YamlFileReaderTest extends TestCase
         $reader = new YamlFileReader();
         $this->expectException(ReaderException::class);
         $this->expectExceptionMessage("can not be read.");
-        $config = $reader->createConfiguration(path: __DIR__ . '/fixtures/valid.yaml');
+        $config = $reader->createConfiguration(path: __DIR__ . '/../fixtures/valid.yaml');
     }
 
     public function testInvalidInput(): void
@@ -83,7 +83,7 @@ class YamlFileReaderTest extends TestCase
         $reader = new YamlFileReader();
         $this->expectException(ReaderException::class);
         $this->expectExceptionMessage('YAML: A colon cannot be used in an unquoted mapping value');
-        $config = $reader->createConfiguration(path: __DIR__ . '/fixtures/invalid.yaml');
+        $config = $reader->createConfiguration(path: __DIR__ . '/../fixtures/invalid.yaml');
     }
 
     public function testMissingDependency(): void

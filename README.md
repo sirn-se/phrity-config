@@ -1,3 +1,5 @@
+<p align="center"><img src="docs/logotype.png" alt="Phrity Config" width="100%"></p>
+
 [![Build Status](https://github.com/sirn-se/phrity-config/actions/workflows/acceptance.yml/badge.svg)](https://github.com/sirn-se/phrity-config/actions)
 [![Coverage Status](https://coveralls.io/repos/github/sirn-se/phrity-config/badge.svg?branch=main)](https://coveralls.io/github/sirn-se/phrity-config?branch=main)
 
@@ -130,6 +132,7 @@ $configMerged = $factory->merge(
 
 | Version | PHP | |
 | --- | --- | --- |
+| `1.4` | `^8.1` | Transfomers |
 | `1.3` | `^8.1` | Coerce option |
 | `1.2` | `^8.1` | Reader (data), all file-readers get `optional` option |
 | `1.1` | `^8.1` | Readers (yaml, env-file) |

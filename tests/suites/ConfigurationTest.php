@@ -22,7 +22,7 @@ class ConfigurationTest extends TestCase
     public function testHas(): void
     {
         $reader = new JsonFileReader();
-        $config = $reader->createConfiguration(__DIR__ . '/fixtures/complex.json');
+        $config = $reader->createConfiguration(__DIR__ . '/../fixtures/complex.json');
 
         $this->assertTrue($config->has('string'));
         $this->assertTrue($config->has('object'));
@@ -46,7 +46,7 @@ class ConfigurationTest extends TestCase
     public function testGet(): void
     {
         $reader = new JsonFileReader();
-        $config = $reader->createConfiguration(__DIR__ . '/fixtures/complex.json');
+        $config = $reader->createConfiguration(__DIR__ . '/../fixtures/complex.json');
 
         $this->assertEquals('str', $config->get('string'));
         $this->assertEquals((object)[
@@ -74,7 +74,7 @@ class ConfigurationTest extends TestCase
     public function testGetDefault(): void
     {
         $reader = new JsonFileReader();
-        $config = $reader->createConfiguration(__DIR__ . '/fixtures/complex.json');
+        $config = $reader->createConfiguration(__DIR__ . '/../fixtures/complex.json');
 
         $this->assertEquals('No', $config->get('no', default: 'No'));
         $this->assertEquals('False', $config->get('object/false', default: 'False'));
@@ -84,7 +84,7 @@ class ConfigurationTest extends TestCase
     public function testNotFound(): void
     {
         $reader = new JsonFileReader();
-        $config = $reader->createConfiguration(__DIR__ . '/fixtures/complex.json');
+        $config = $reader->createConfiguration(__DIR__ . '/../fixtures/complex.json');
 
         $this->expectException(NotFoundException::class);
         $this->expectExceptionMessage("No configuration entry with id 'no'.");
@@ -94,7 +94,7 @@ class ConfigurationTest extends TestCase
     public function testJsonSerialize(): void
     {
         $reader = new JsonFileReader();
-        $config = $reader->createConfiguration(__DIR__ . '/fixtures/valid.json');
+        $config = $reader->createConfiguration(__DIR__ . '/../fixtures/valid.json');
 
         $this->assertEquals((object)[
             'a' => (object)['a' => 1, 'b' => 2],
@@ -105,8 +105,8 @@ class ConfigurationTest extends TestCase
     public function testMerge(): void
     {
         $reader = new JsonFileReader();
-        $config = $reader->createConfiguration(__DIR__ . '/fixtures/complex.json');
-        $extend = $reader->createConfiguration(__DIR__ . '/fixtures/merge.json');
+        $config = $reader->createConfiguration(__DIR__ . '/../fixtures/complex.json');
+        $extend = $reader->createConfiguration(__DIR__ . '/../fixtures/merge.json');
         $merged = $config->merge($extend);
 
         // Original must be intact
@@ -162,7 +162,7 @@ class ConfigurationTest extends TestCase
     public function testCoercionToBool(): void
     {
         $reader = new JsonFileReader();
-        $config = $reader->createConfiguration(__DIR__ . '/fixtures/coercion.json');
+        $config = $reader->createConfiguration(__DIR__ . '/../fixtures/coercion.json');
         $this->assertSame(false, $config->get('null', coerce: Type::BOOLEAN));
         $this->assertSame(false, $config->get('false', coerce: Type::BOOLEAN));
         $this->assertSame(true, $config->get('true', coerce: Type::BOOLEAN));
@@ -184,7 +184,7 @@ class ConfigurationTest extends TestCase
     public function testCoercionToInt(): void
     {
         $reader = new JsonFileReader();
-        $config = $reader->createConfiguration(__DIR__ . '/fixtures/coercion.json');
+        $config = $reader->createConfiguration(__DIR__ . '/../fixtures/coercion.json');
         $this->assertSame(0, $config->get('null', coerce: Type::INTEGER));
         $this->assertSame(0, $config->get('false', coerce: Type::INTEGER));
         $this->assertSame(1, $config->get('true', coerce: Type::INTEGER));
@@ -204,7 +204,7 @@ class ConfigurationTest extends TestCase
     public function testCoercionToDouble(): void
     {
         $reader = new JsonFileReader();
-        $config = $reader->createConfiguration(__DIR__ . '/fixtures/coercion.json');
+        $config = $reader->createConfiguration(__DIR__ . '/../fixtures/coercion.json');
         $this->assertSame(0.0, $config->get('null', coerce: Type::NUMBER));
         $this->assertSame(0.0, $config->get('false', coerce: Type::NUMBER));
         $this->assertSame(1.0, $config->get('true', coerce: Type::NUMBER));
@@ -224,7 +224,7 @@ class ConfigurationTest extends TestCase
     public function testCoercionToString(): void
     {
         $reader = new JsonFileReader();
-        $config = $reader->createConfiguration(__DIR__ . '/fixtures/coercion.json');
+        $config = $reader->createConfiguration(__DIR__ . '/../fixtures/coercion.json');
         $this->assertSame('null', $config->get('null', coerce: Type::STRING));
         $this->assertSame('false', $config->get('false', coerce: Type::STRING));
         $this->assertSame('true', $config->get('true', coerce: Type::STRING));
@@ -239,7 +239,7 @@ class ConfigurationTest extends TestCase
     public function testCoercionToNull(): void
     {
         $reader = new JsonFileReader();
-        $config = $reader->createConfiguration(__DIR__ . '/fixtures/coercion.json');
+        $config = $reader->createConfiguration(__DIR__ . '/../fixtures/coercion.json');
         $this->assertSame(null, $config->get('null', coerce: Type::NULL));
         $this->assertSame(null, $config->get('false', coerce: Type::NULL));
         $this->assertSame(null, $config->get('integer-0', coerce: Type::NULL));
@@ -257,7 +257,7 @@ class ConfigurationTest extends TestCase
     public function testInvalidCoercionType(): void
     {
         $reader = new JsonFileReader();
-        $config = $reader->createConfiguration(__DIR__ . '/fixtures/coercion.json');
+        $config = $reader->createConfiguration(__DIR__ . '/../fixtures/coercion.json');
         $this->expectException(CoercionException::class);
         $this->expectExceptionMessage("Invalid coercion type 'unsupported'");
         $config->get('object', coerce: 'unsupported');

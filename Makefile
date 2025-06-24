@@ -14,7 +14,7 @@ cs: composer.lock
 stan: composer.lock
 	./vendor/bin/phpstan analyse --memory-limit 256M
 
-coverage: composer.lock
+coverage: composer.lock build
 	XDEBUG_MODE=coverage ./vendor/bin/phpunit --coverage-clover build/logs/clover.xml
 	./vendor/bin/php-coveralls -v
 
@@ -28,3 +28,12 @@ composer.lock: composer.phar
 	./composer.phar --no-interaction install
 
 vendor/bin/phpunit: install
+
+build:
+	mkdir build
+
+clean:
+	rm composer.lock
+	rm -r vendor
+	rm -r coverage
+	rm -r build
