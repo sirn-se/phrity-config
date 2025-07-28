@@ -85,6 +85,27 @@ class ConfigurationFactory
         return $reader->createConfiguration(path: $path);
     }
 
+    public function fromNeon(
+        string $neon,
+    ): ConfigurationInterface {
+        $reader = new NeonReader(
+            class: $this->class,
+        );
+        return $reader->createConfiguration(neon: $neon);
+    }
+
+    public function fromNeonFile(
+        string $path,
+        bool|null $optional = null,
+    ): ConfigurationInterface {
+        $reader = new NeonFileReader(
+            class: $this->class,
+            prefix: $this->prefix,
+            optional: $optional ?? $this->optional,
+        );
+        return $reader->createConfiguration(path: $path);
+    }
+
     /**
      * @param string|null $separator
      * @param array<mixed>|null $match

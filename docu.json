@@ -1,0 +1,31 @@
+[
+    {
+        "name": "Overview",
+        "link": "README.md"
+    },
+    {
+        "name": "Readers",
+        "children": [
+            {
+                "name": "Data",
+                "link": "docs/codecs/Data.md"
+            },
+            {
+                "name": "ENV",
+                "link": "docs/codecs/Env.md"
+            },
+            {
+                "name": "JSON",
+                "link": "docs/codecs/Json.md"
+            },
+            {
+                "name": "NEON",
+                "link": "docs/codecs/Neon.md"
+            },
+            {
+                "name": "YAML",
+                "link": "docs/codecs/Yaml.md"
+            }
+        ]
+    }
+]

@@ -1,6 +1,6 @@
 [Documentation](../README.md) / JSON
 
-# Env readers
+# JSON readers
 
 Readers for JSON input.
 

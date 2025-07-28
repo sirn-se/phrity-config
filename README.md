@@ -97,9 +97,10 @@ $merged = $config->merge($additional);
 A number of configuration readers are available.
 
 * [DataReader](docs/Data.md) - Reader for PHP data input
-* [EnvReader and EnvFileReader](docs/Env.md) - Readers for ENV input
+* [EnvReader and EnvFileReader](docs/Env.md) - Readers for ENV input (file reader requires `symfony/dotenv`)
 * [JsonReader and JsonFileReader](docs/Json.md) - Readers for JSON input
-* [YamlReader and YamlFileReader](docs/Yaml.md) - Readers for YAML input
+* [NeonReader and NeonFileReader](docs/Neon.md) - Reader for NEON input (requires `nette/neon`)
+* [YamlReader and YamlFileReader](docs/Yaml.md) - Readers for YAML input (requires `symfony/yaml`)
 
 ## The `ConfigurationFactory` class
 
@@ -132,6 +133,7 @@ $configMerged = $factory->merge(
 
 | Version | PHP | |
 | --- | --- | --- |
+| `1.5` | `^8.1` | neon readers |
 | `1.4` | `^8.1` | Transfomers |
 | `1.3` | `^8.1` | Coerce option |
 | `1.2` | `^8.1` | Reader (data), all file-readers get `optional` option |
