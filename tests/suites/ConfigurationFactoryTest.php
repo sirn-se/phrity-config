@@ -50,6 +50,20 @@ class ConfigurationFactoryTest extends TestCase
         $this->assertInstanceOf(ConfigurationInterface::class, $config);
     }
 
+    public function testFromNeon(): void
+    {
+        $factory = new ConfigurationFactory();
+        $config = $factory->fromNeon('b: 66');
+        $this->assertInstanceOf(ConfigurationInterface::class, $config);
+    }
+
+    public function testFromNeonFile(): void
+    {
+        $factory = new ConfigurationFactory();
+        $config = $factory->fromNeonFile(path: __DIR__ . '/../fixtures/valid.neon');
+        $this->assertInstanceOf(ConfigurationInterface::class, $config);
+    }
+
     public function testFromEnv(): void
     {
         $factory = new ConfigurationFactory();

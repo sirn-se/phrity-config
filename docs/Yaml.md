@@ -1,8 +1,10 @@
 [Documentation](../README.md) / YAML
 
-# Env readers
+# YAML readers
 
 Readers for YAML input.
+
+⚠️ YAML readers require [`symfony/yaml`](https://packagist.org/packages/symfony/yaml) to be installed
 
 ## The YamlReader
 

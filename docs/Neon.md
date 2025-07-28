@@ -1,18 +1,18 @@
-[Documentation](../README.md) / ENV
+[Documentation](../README.md) / NEON
 
-# Env readers
+# NEON readers
 
-Readers for ENV input.
+Readers for NEON input.
 
-⚠️ ENV file reader requires [`symfony/dotenv`](https://packagist.org/packages/symfony/dotenv) to be installed
+⚠️ NEON readers require [`nette/neon`](https://packagist.org/packages/nette/neon) to be installed
 
-## The EnvReader
+## The NeonReader
 
 ```php
-$reader = new EnvReader();
+$reader = new NeonReader();
 
-// Read from environment variables
-$configuration = $reader->createConfiguration();
+// Read from Neon string
+$configuration = $reader->createConfiguration('a: 1');
 ```
 
 ### Constructor options
@@ -20,30 +20,28 @@ $configuration = $reader->createConfiguration();
 ```php
 public function __construct(
     string $class = Configuration::class,
-    string|null $separator = null,
 );
 ```
 
 * `class` - An instance of any class implementing `ConfigurationInterface` to be returned (default `Configuration`).
-* `separator` - Will parse input into tree structure using separator.
 
 ### createConfiguration options
 
 ```php
 public function createConfiguration(
-    array|null $match = null,
+    string $neon = '{}',
 ): ConfigurationInterface;
 ```
 
-* `match` - If specified, only matching environment variables will be read.
+* `neon` - NEON string to parse.
 
-## The EnvFileReader
+## The NeonFileReader
 
 ```php
-$reader = new EnvFileReader();
+$reader = new NeonFileReader();
 
 // Read from file
-$configuration = $reader->createConfiguration(path: 'path/to/file.env');
+$configuration = $reader->createConfiguration(path: 'path/to/file.neon');
 ```
 
 ### Constructor options
@@ -52,24 +50,20 @@ $configuration = $reader->createConfiguration(path: 'path/to/file.env');
 public function __construct(
     string $class = Configuration::class,
     string $prefix = '',
-    string|null $separator = null,
     bool $optional = false,
 );
 ```
 
 * `class` - An instance of any class implementing `ConfigurationInterface` to be returned (default `Configuration`).
 * `prefix` - File path prefix.
-* `separator` - Will parse input into tree structure using separator.
 * `optional` - If true, reader will return empty configuration if file is missing.
 
 ### createConfiguration options
 
 ```php
 public function createConfiguration(
-    string $path = '.env',
-    array|null $match = null,
+    string $path = 'config.neon',
 ): ConfigurationInterface;
 ```
 
 * `path` - File to be read.
-* `match` - If specified, only matching environment variables will be read.
