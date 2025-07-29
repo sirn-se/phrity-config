@@ -133,7 +133,7 @@ $configMerged = $factory->merge(
 
 | Version | PHP | |
 | --- | --- | --- |
-| `1.5` | `^8.1` | neon readers |
+| `1.5` | `^8.1` | Reader (neon, neon-file), improved transformer |
 | `1.4` | `^8.1` | Transfomers |
 | `1.3` | `^8.1` | Coerce option |
 | `1.2` | `^8.1` | Reader (data), all file-readers get `optional` option |
