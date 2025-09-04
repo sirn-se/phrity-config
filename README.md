@@ -114,6 +114,8 @@ $configJson = $factory->fromJson(json: '{"a": 23}');
 $configJsonFile = $factory->fromJsonFile(path: 'path/to/config.json');
 $configYaml = $factory->fromYaml(yaml: 'n: 23');
 $configYamlFile = $factory->fromYamlFile(path: 'path/to/config.yaml');
+$configNeon = $factory->fromNeon(neon: 'n: 23');
+$configNeonFile = $factory->fromNeonFile(path: 'path/to/config.neon');
 $configEnv = $factory->fromEnv();
 $configEnvFile = $factory->fromEnvFile('.env');
 
@@ -123,17 +125,18 @@ $configMerged = $factory->merge(
     $configJsonFile,
     $configYaml,
     $configYamlFile,
+    $configNeon,
+    $configNeonFile,
     $configEnv,
-    $configEnvlFile,
+    $configEnvFile,
 );
 ```
-
 
 ## Versions
 
 | Version | PHP | |
 | --- | --- | --- |
-| `1.5` | `^8.1` | Reader (neon, neon-file), improved transformer |
+| `1.5` | `^8.1` | Readers (neon, neon-file), improved transformer |
 | `1.4` | `^8.1` | Transfomers |
 | `1.3` | `^8.1` | Coerce option |
 | `1.2` | `^8.1` | Reader (data), all file-readers get `optional` option |

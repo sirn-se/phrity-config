@@ -79,6 +79,7 @@ class ConfigurationTest extends TestCase
         $this->assertEquals('No', $config->get('no', default: 'No'));
         $this->assertEquals('False', $config->get('object/false', default: 'False'));
         $this->assertEquals('4', $config->get('array/4', default: '4'));
+        $this->assertNull($config->get('array/4', default: null));
     }
 
     public function testNotFound(): void
