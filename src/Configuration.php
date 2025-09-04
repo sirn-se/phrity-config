@@ -35,7 +35,7 @@ class Configuration implements ConfigurationInterface
      */
     public function get(string $id, mixed ...$opt): mixed
     {
-        if (!$this->has($id) && !isset($opt['default'])) {
+        if (!$this->has($id) && !array_key_exists('default', $opt)) {
             throw new NotFoundException("No configuration entry with id '{$id}'.");
         }
         $opt = array_merge(['default' => null, 'coerce' => null], $opt);
