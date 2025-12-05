@@ -34,6 +34,7 @@ class NeonReader implements ReaderInterface
         string $neon = '{}',
     ): ConfigurationInterface {
         try {
+            /** @throws Exception */
             $data = Neon::decode($neon);
             if (!is_array($data)) {
                 throw new ReaderException("NEON: Invalid input");
