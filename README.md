@@ -101,6 +101,7 @@ A number of configuration readers are available.
 * [JsonReader and JsonFileReader](docs/Json.md) - Readers for JSON input
 * [NeonReader and NeonFileReader](docs/Neon.md) - Reader for NEON input (requires `nette/neon`)
 * [YamlReader and YamlFileReader](docs/Yaml.md) - Readers for YAML input (requires `symfony/yaml`)
+* [DirectoryReader](docs/Directory.md) - Reads and merges all supported configuration files in directory
 
 ## The `ConfigurationFactory` class
 
@@ -136,6 +137,7 @@ $configMerged = $factory->merge(
 
 | Version | PHP | |
 | --- | --- | --- |
+| `1.6` | `^8.1` | Reader (directory) |
 | `1.5` | `^8.1` | Readers (neon, neon-file), improved transformer |
 | `1.4` | `^8.1` | Transfomers |
 | `1.3` | `^8.1` | Coerce option |

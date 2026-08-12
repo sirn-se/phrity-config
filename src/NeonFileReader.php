@@ -4,11 +4,14 @@ namespace Phrity\Config;
 
 /**
  * @template T of ConfigurationInterface
- * @extends NeonReader<T>
  */
-class NeonFileReader extends NeonReader implements ReaderInterface
+class NeonFileReader implements FileReaderInterface
 {
     use FileTrait;
+    use NeonTrait;
+
+    /** @var class-string<T> $class */
+    protected string $class;
 
     /**
      * @param class-string<T> $class
@@ -18,7 +21,8 @@ class NeonFileReader extends NeonReader implements ReaderInterface
         string $prefix = '',
         bool $optional = false,
     ) {
-        parent::__construct($class);
+        $this->neonInstalled();
+        $this->class = $class;
         $this->prefix = $prefix;
         $this->optional = $optional;
     }
@@ -26,12 +30,13 @@ class NeonFileReader extends NeonReader implements ReaderInterface
     /**
      * @return T
      */
-    public function createConfiguration(string $path = 'config.neon'): ConfigurationInterface
-    {
-        $content = $this->readFile($path);
-        if (is_null($content)) {
+    public function createConfiguration(
+        string $path = 'config.neon'
+    ): ConfigurationInterface {
+        $neon = $this->readFile($path);
+        if (is_null($neon)) {
             return new $this->class();
         }
-        return parent::createConfiguration($content);
+        return new $this->class($this->neonDecode($neon));
     }
 }

@@ -2,17 +2,15 @@
 
 namespace Phrity\Config;
 
-use Symfony\Component\Yaml\Exception\ParseException;
-use Symfony\Component\Yaml\Parser;
-
 /**
  * @template T of ConfigurationInterface
  */
 class YamlReader implements ReaderInterface
 {
+    use YamlTrait;
+
     /** @var class-string<T> $class */
     protected string $class;
-    protected Parser $parser;
 
     /**
      * @param class-string<T> $class
@@ -20,11 +18,8 @@ class YamlReader implements ReaderInterface
     public function __construct(
         string $class = Configuration::class,
     ) {
-        if (!class_exists(Parser::class)) {
-            throw new ReaderException("Dependency 'symfony/yaml' not installed, can not read YAML file.");
-        }
+        $this->yamlInstalled();
         $this->class = $class;
-        $this->parser = new Parser();
     }
 
     /**
@@ -33,11 +28,6 @@ class YamlReader implements ReaderInterface
     public function createConfiguration(
         string $yaml = '{}',
     ): ConfigurationInterface {
-        try {
-            $data = $this->parser->parse($yaml);
-            return new $this->class($data);
-        } catch (ParseException $e) {
-            throw new ReaderException("YAML: {$e->getMessage()}");
-        }
+        return new $this->class($this->yamlDecode($yaml));
     }
 }

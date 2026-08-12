@@ -2,16 +2,13 @@
 
 namespace Phrity\Config;
 
-use Nette\Neon\{
-    Exception,
-    Neon,
-};
-
 /**
  * @template T of ConfigurationInterface
  */
 class NeonReader implements ReaderInterface
 {
+    use NeonTrait;
+
     /** @var class-string<T> $class */
     protected string $class;
 
@@ -21,9 +18,7 @@ class NeonReader implements ReaderInterface
     public function __construct(
         string $class = Configuration::class,
     ) {
-        if (!class_exists(Neon::class)) {
-            throw new ReaderException("Dependency 'nette/neon' not installed, can not read NEON file.");
-        }
+        $this->neonInstalled();
         $this->class = $class;
     }
 
@@ -33,15 +28,6 @@ class NeonReader implements ReaderInterface
     public function createConfiguration(
         string $neon = '{}',
     ): ConfigurationInterface {
-        try {
-            /** @throws Exception */
-            $data = Neon::decode($neon);
-            if (!is_array($data)) {
-                throw new ReaderException("NEON: Invalid input");
-            }
-            return new $this->class($data);
-        } catch (Exception $e) {
-            throw new ReaderException("NEON: {$e->getMessage()}");
-        }
+        return new $this->class($this->neonDecode($neon));
     }
 }

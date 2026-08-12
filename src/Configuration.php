@@ -59,7 +59,7 @@ class Configuration implements ConfigurationInterface
     /**
      * Merge this with another Configuration instance and return.
      * @param ConfigurationInterface $config The Configuration instance to merge
-     * @return Configuration New Configuration instance with merged result
+     * @return self New Configuration instance with merged result
      */
     public function merge(ConfigurationInterface $config): self
     {
@@ -102,9 +102,9 @@ class Configuration implements ConfigurationInterface
         array_walk($d2, function (mixed $value, string $key) use ($changed) {
             if (!property_exists($changed, $key) || gettype($value) != gettype($changed->$key) || is_scalar($value)) {
                 $changed->$key = $value;
-            } elseif (is_array($value)) {
+            } elseif (is_array($value) && is_array($changed->$key)) {
                 $changed->$key = array_values(array_merge($changed->$key, $value));
-            } elseif (is_object($value)) {
+            } elseif (is_object($value) && is_object($changed->$key)) {
                 $changed->$key = $this->merger($changed->$key, $value);
             }
         });

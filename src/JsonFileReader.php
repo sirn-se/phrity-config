@@ -4,11 +4,14 @@ namespace Phrity\Config;
 
 /**
  * @template T of ConfigurationInterface
- * @extends JsonReader<T>
  */
-class JsonFileReader extends JsonReader implements ReaderInterface
+class JsonFileReader implements FileReaderInterface
 {
     use FileTrait;
+    use JsonTrait;
+
+    /** @var class-string<T> $class */
+    protected string $class;
 
     /**
      * @param class-string<T> $class
@@ -18,7 +21,7 @@ class JsonFileReader extends JsonReader implements ReaderInterface
         string $prefix = '',
         bool $optional = false,
     ) {
-        parent::__construct($class);
+        $this->class = $class;
         $this->prefix = $prefix;
         $this->optional = $optional;
     }
@@ -29,10 +32,10 @@ class JsonFileReader extends JsonReader implements ReaderInterface
     public function createConfiguration(
         string $path = 'config.json',
     ): ConfigurationInterface {
-        $content = $this->readFile($path);
-        if (is_null($content)) {
+        $json = $this->readFile($path);
+        if (is_null($json)) {
             return new $this->class();
         }
-        return parent::createConfiguration($content);
+        return new $this->class($this->jsonDecode($json));
     }
 }

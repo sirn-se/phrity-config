@@ -8,7 +8,7 @@ use Symfony\Component\Dotenv\Exception\FormatException;
 /**
  * @template T of ConfigurationInterface
  */
-class EnvFileReader implements ReaderInterface
+class EnvFileReader implements FileReaderInterface
 {
     use FileTrait;
     use TreeTrait;
