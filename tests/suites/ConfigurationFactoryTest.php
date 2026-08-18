@@ -78,6 +78,13 @@ class ConfigurationFactoryTest extends TestCase
         $this->assertInstanceOf(ConfigurationInterface::class, $config);
     }
 
+    public function testFromDirectory(): void
+    {
+        $factory = new ConfigurationFactory();
+        $config = $factory->fromDirectory(path: __DIR__ . '/../fixtures/valid.*');
+        $this->assertInstanceOf(ConfigurationInterface::class, $config);
+    }
+
     public function testFactoryClass(): void
     {
         $factory = new ConfigurationFactory(class: TestConfiguration::class);

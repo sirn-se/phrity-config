@@ -18,12 +18,12 @@ $configuration = $reader->createConfiguration(path: 'my/config/directory/');
 ```php
 public function __construct(
     string $class = Configuration::class,
-    array $readers = [],
+    array|null $readers = null,
 );
 ```
 
 * `class` - An instance of any class implementing `ConfigurationInterface` to be returned (default `Configuration`).
-* `readers` - Associative array of file readers. File extension as key, file reader class as class-string or instance.
+* `readers` - Optional associative array of file readers. File extension as key, file reader class as class-string or instance.
 
 Default readers are;
 ```php

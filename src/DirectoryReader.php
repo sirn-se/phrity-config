@@ -16,18 +16,18 @@ class DirectoryReader implements ReaderInterface
 
     /**
      * @param class-string<T> $class
-     * @param array<string, class-string<FileReaderInterface>|FileReaderInterface> $readers
+     * @param array<string, class-string<FileReaderInterface>|FileReaderInterface>|null $readers
      */
     public function __construct(
         string $class = Configuration::class,
-        array $readers = [
+        array|null $readers = null,
+    ) {
+        $this->class = $class;
+        $this->readers = $readers ?? [
             'json' => JsonFileReader::class,
             'neon' => NeonFileReader::class,
             'yaml' => YamlFileReader::class,
-        ],
-    ) {
-        $this->class = $class;
-        $this->readers = $readers;
+        ];
     }
 
     /**

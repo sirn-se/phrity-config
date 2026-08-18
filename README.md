@@ -119,6 +119,7 @@ $configNeon = $factory->fromNeon(neon: 'n: 23');
 $configNeonFile = $factory->fromNeonFile(path: 'path/to/config.neon');
 $configEnv = $factory->fromEnv();
 $configEnvFile = $factory->fromEnvFile('.env');
+$configDirectory = $factory->fromDirectory('path/to/config/*json');
 
 $configMerged = $factory->merge(
     $configData,
@@ -130,6 +131,7 @@ $configMerged = $factory->merge(
     $configNeonFile,
     $configEnv,
     $configEnvFile,
+    $configDirectory,
 );
 ```
 
