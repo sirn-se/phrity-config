@@ -4,12 +4,12 @@
 
 Reads and merges all supported configuration files in directory, optionally with filter.
 
-## The JsonReader
+## The DirectoryReader
 
 ```php
 $reader = new DirectoryReader();
 
-// Read from JSON string
+// Read all files in directory
 $configuration = $reader->createConfiguration(path: 'my/config/directory/');
 ```
 
