@@ -2,13 +2,19 @@
 
 namespace Phrity\Config;
 
+use Symfony\Component\Yaml\Exception\ParseException;
+use Symfony\Component\Yaml\Parser;
+
 /**
  * @template T of ConfigurationInterface
- * @extends YamlReader<T>
  */
-class YamlFileReader extends YamlReader implements ReaderInterface
+class YamlFileReader implements FileReaderInterface
 {
     use FileTrait;
+    use YamlTrait;
+
+    /** @var class-string<T> $class */
+    protected string $class;
 
     /**
      * @param class-string<T> $class
@@ -18,7 +24,8 @@ class YamlFileReader extends YamlReader implements ReaderInterface
         string $prefix = '',
         bool $optional = false,
     ) {
-        parent::__construct($class);
+        $this->yamlInstalled();
+        $this->class = $class;
         $this->prefix = $prefix;
         $this->optional = $optional;
     }
@@ -26,12 +33,13 @@ class YamlFileReader extends YamlReader implements ReaderInterface
     /**
      * @return T
      */
-    public function createConfiguration(string $path = 'config.yaml'): ConfigurationInterface
-    {
-        $content = $this->readFile($path);
-        if (is_null($content)) {
+    public function createConfiguration(
+        string $path = 'config.yaml'
+    ): ConfigurationInterface {
+        $yaml = $this->readFile($path);
+        if (is_null($yaml)) {
             return new $this->class();
         }
-        return parent::createConfiguration($content);
+        return new $this->class($this->yamlDecode($yaml));
     }
 }

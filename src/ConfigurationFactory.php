@@ -142,6 +142,21 @@ class ConfigurationFactory
         return $reader->createConfiguration(path: $path, match: $match);
     }
 
+    /**
+     * @param string $path
+     * @param array<string, class-string<FileReaderInterface>|FileReaderInterface> $readers
+     */
+    public function fromDirectory(
+        string $path,
+        array|null $readers = null,
+    ): ConfigurationInterface {
+        $reader = new DirectoryReader(
+            class: $this->class,
+            readers: $readers,
+        );
+        return $reader->createConfiguration(path: $path);
+    }
+
     public function merge(ConfigurationInterface ...$configurations): ConfigurationInterface
     {
         return array_reduce($configurations, function (ConfigurationInterface $carry, ConfigurationInterface $item) {
