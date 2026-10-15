@@ -4,6 +4,8 @@
 
 The `Phrity\Config\ConfigurationFactory` provides shortcuts to create and merge configurations.
 
+## Reading configuration
+
 ```php
 $factory = new Phrity\Config\ConfigurationFactory();
 
@@ -17,6 +19,12 @@ $configNeonFile = $factory->fromNeonFile(path: 'path/to/config.neon');
 $configEnv = $factory->fromEnv();
 $configEnvFile = $factory->fromEnvFile('.env');
 $configDirectory = $factory->fromDirectory('path/to/config/*json');
+```
+
+## Merging configurations
+
+```php
+$factory = new Phrity\Config\ConfigurationFactory();
 
 $configMerged = $factory->merge(
     $configData,
@@ -30,4 +38,13 @@ $configMerged = $factory->merge(
     $configEnvFile,
     $configDirectory,
 );
+```
+
+## Writing configuration
+
+```php
+$factory = new Phrity\Config\ConfigurationFactory();
+$config = new Phrity\Config\Configuration(['a' => 23]);
+
+$factory->toJsonFile($config, 'path/to/config.json');
 ```
