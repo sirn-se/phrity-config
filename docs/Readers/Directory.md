@@ -1,4 +1,4 @@
-[Documentation](../README.md) / Readers / Directory
+[Documentation](../../README.md) / Readers / Directory
 
 # Directory reader
 

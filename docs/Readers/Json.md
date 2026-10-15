@@ -1,4 +1,4 @@
-[Documentation](../README.md) / Readers / JSON
+[Documentation](../../README.md) / Readers / JSON
 
 # JSON readers
 

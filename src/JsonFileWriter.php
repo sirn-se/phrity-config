@@ -17,8 +17,10 @@ class JsonFileWriter implements FileWriterInterface
         $this->pretty = $pretty;
     }
 
-    public function writeConfiguration(ConfigurationInterface $configuration, string $path = ''): void
-    {
+    public function writeConfiguration(
+        ConfigurationInterface $configuration,
+        string $path = '',
+    ): void {
         $encoded = $this->jsonEncode($configuration, $this->pretty);
         $this->writeFile($encoded, $path);
     }
