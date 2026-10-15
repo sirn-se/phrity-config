@@ -9,6 +9,13 @@ use Phrity\Config\Test\TestConfiguration;
 
 class ConfigurationFactoryTest extends TestCase
 {
+    public function tearDown(): void
+    {
+        if (file_exists($this->testfile())) {
+            unlink($this->testfile());
+        }
+    }
+
     public function testConfigurationFactory(): void
     {
         $factory = new ConfigurationFactory();
@@ -85,6 +92,14 @@ class ConfigurationFactoryTest extends TestCase
         $this->assertInstanceOf(ConfigurationInterface::class, $config);
     }
 
+    public function testToJsonFile(): void
+    {
+        $factory = new ConfigurationFactory();
+        $config = new Configuration(['a' => 1, 'b' => 2]);
+        $factory->toJsonFile($config, $this->testfile());
+        $this->assertFileExists($this->testfile());
+    }
+
     public function testFactoryClass(): void
     {
         $factory = new ConfigurationFactory(class: TestConfiguration::class);
@@ -113,5 +128,10 @@ class ConfigurationFactoryTest extends TestCase
             $factory->fromEnv(),
         );
         $this->assertInstanceOf(ConfigurationInterface::class, $config);
+    }
+
+    private function testfile(): string
+    {
+        return sys_get_temp_dir() . "/phrity-config-test/test.json";
     }
 }

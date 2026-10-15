@@ -1,18 +1,18 @@
-[Documentation](../README.md) / YAML
+[Documentation](../../README.md) / Readers / NV
 
-# YAML readers
+# Env readers
 
-Readers for YAML input.
+Readers for ENV input.
 
-⚠️ YAML readers require [`symfony/yaml`](https://packagist.org/packages/symfony/yaml) to be installed
+⚠️ ENV file reader requires [`symfony/dotenv`](https://packagist.org/packages/symfony/dotenv) to be installed
 
-## The YamlReader
+## The EnvReader
 
 ```php
-$reader = new YamlReader();
+$reader = new EnvReader();
 
-// Read from YAML string
-$configuration = $reader->createConfiguration('a: 1');
+// Read from environment variables
+$configuration = $reader->createConfiguration();
 ```
 
 ### Constructor options
@@ -20,28 +20,30 @@ $configuration = $reader->createConfiguration('a: 1');
 ```php
 public function __construct(
     string $class = Configuration::class,
+    string|null $separator = null,
 );
 ```
 
 * `class` - An instance of any class implementing `ConfigurationInterface` to be returned (default `Configuration`).
+* `separator` - Will parse input into tree structure using separator.
 
 ### createConfiguration options
 
 ```php
 public function createConfiguration(
-    string $yaml = '{}',
+    array|null $match = null,
 ): ConfigurationInterface;
 ```
 
-* `yaml` - YAML string to parse.
+* `match` - If specified, only matching environment variables will be read.
 
-## The YamlFileReader
+## The EnvFileReader
 
 ```php
-$reader = new YamlFileReader();
+$reader = new EnvFileReader();
 
 // Read from file
-$configuration = $reader->createConfiguration(path: 'path/to/file.yaml');
+$configuration = $reader->createConfiguration(path: 'path/to/file.env');
 ```
 
 ### Constructor options
@@ -50,20 +52,24 @@ $configuration = $reader->createConfiguration(path: 'path/to/file.yaml');
 public function __construct(
     string $class = Configuration::class,
     string $prefix = '',
+    string|null $separator = null,
     bool $optional = false,
 );
 ```
 
 * `class` - An instance of any class implementing `ConfigurationInterface` to be returned (default `Configuration`).
 * `prefix` - File path prefix.
+* `separator` - Will parse input into tree structure using separator.
 * `optional` - If true, reader will return empty configuration if file is missing.
 
 ### createConfiguration options
 
 ```php
 public function createConfiguration(
-    string $path = 'config.yaml',
+    string $path = '.env',
+    array|null $match = null,
 ): ConfigurationInterface;
 ```
 
 * `path` - File to be read.
+* `match` - If specified, only matching environment variables will be read.

@@ -5,7 +5,7 @@
 # Introduction
 
 Tools for handling configuration.
-Interfaces, implementation class, various readers and a factory.
+Interfaces, implementation classes, various readers, writers and a factory.
 
 ## Installation
 
@@ -14,134 +14,81 @@ Install with [Composer](https://getcomposer.org/);
 composer require phrity/config
 ```
 
-## The `ConfigurationInterface` interface
+# Documentation
 
-The `Phrity\Config\ConfigurationInterface` extends
-[PSR-11 ContainerInterface](https://www.php-fig.org/psr/psr-11/) and
-[JsonSerializable](https://www.php.net/manual/en/class.jsonserializable) interfaces.
+## Configuration
 
-```php
-// ContainerInterface implementation
-public function get(string $id): mixed;
-public function has(string $id): bool;
-
-// JsonSerializable implementation
-public function jsonSerialize(): mixed;
-
-// Additional methods
-public function __construct(object|array $config);
-public function merge(ConfigurationInterface $config): ConfigurationInterface;
-```
-
-## The `Configuration` class
-
-The `Phrity\Config\Configuration` class implements the `ConfigurationInterface`.
+Implements [PSR-11 ContainerInterface](https://www.php-fig.org/psr/psr-11/), providing `get()` and `has()` methods.
 
 ```php
-use Phrity\Config\Configuration;
-
-// Initiate with object or associative array
-$config = new Configuration([
-    'a' => 23,
-    'b' => [
-        'bb' => 66,
-    ],
-]);
-
-// Check and get (case insensitive) from configuration
-$config->has('a'); // => true
-$config->get('a'); // => 23
-
-// Trying to get non-exising configuration will throw exception
-$config->has('c'); // => false
-$config->get('c'); // throws NotFoundException
+$config = new Configuration(['opt1' => 11, 'opt2' => 22]);
+$config->has('opt1'); // -> true
+$config->get('opt1'); // -> 11
 ```
 
-### Accessing by path
+Support path access, default value and type coercion.
+```php
+$config->has('a/b/c');
+$config->get('a/b/c', default: 99, coerce: 'string');
+```
+
+Support merging.
+```php
+$merged = $config->merge(new Configuration($data));
+```
+
+Read more on [Configuration](docs/Configuration.md).
+
+## Writable configuration
+
+Identical to Configuration but also support writing values on the configuration.
+```php
+$config = new WritableConfiguration(['opt1' => 11, 'opt2' => 22]);
+$config->set('opt1', 123);
+$config->with('opt1', 123);
+```
+
+Read more on [WritableConfiguration](docs/WritableConfiguration.md).
+
+## Reader classes
+
+Classes that create configuration instance from various sources.
 
 ```php
-// It is possible to access by path
-$config->has('b/bb'); // => true
-$config->get('b/bb'); // => 66
+$reader = new JsonFileReader();
+$config = $reader->createConfiguration(path: 'path/to/file.json');
 ```
 
-### Specifying default
+List of available readers:
+
+* [DataReader](docs/Readers/Data.md) - Reader for PHP data input
+* [DirectoryReader](docs/Readers/Directory.md) - Reads and merges all supported configuration files in directory
+* [EnvReader and EnvFileReader](docs/Readers/Env.md) - Readers for ENV input (file reader requires `symfony/dotenv`)
+* [JsonReader and JsonFileReader](docs/Readers/Json.md) - Readers for JSON input
+* [NeonReader and NeonFileReader](docs/Readers/Neon.md) - Reader for NEON input (requires `nette/neon`)
+* [YamlReader and YamlFileReader](docs/Readers/Yaml.md) - Readers for YAML input (requires `symfony/yaml`)
+
+## Writer classes
+
+Classes that write configuration to file.
 
 ```php
-// If default is specified, non-exising configuration will return that value instead of throwing exception
-$config->get('a', default: 99); // => 23
-$config->get('c', default: 99); // => 99
+$reader = new JsonFileWriter();
+$config = $reader->writeConfiguration($config, 'path/to/file.json');
 ```
 
-### Type coercion
+List of available writers:
+
+* [JsonFileWriter](docs/Readers/Json.md) - Writer for JSON output
+
+##  Factory
+
+A factory that provides shortcuts to create and merge configurations.
 
 ```php
-// Some types can be coerced into another type
-$config->get('a', coerce: 'string'); // => "23"
+$factory = new ConfigurationFactory();
+$config = $factory->fromJsonFile(path: 'path/to/config.json');
 ```
 
-See [Transformers](https://github.com/sirn-se/phrity-util-transformer) for coerscion options.
-Any coercion not specified will cause a `CoercionException`.
+Read more on [ConfigurationFactory](docs/ConfigurationFactory.md).
 
-### Merging configurations
-
-```php
-// Configurations can be merged (immutable, new instance will be returned)
-$additional = new Configuration(['c' => 12, 'b' => ['bc' => 13]]);
-$merged = $config->merge($additional);
-```
-
-## The Reader classes
-
-A number of configuration readers are available.
-
-* [DataReader](docs/Data.md) - Reader for PHP data input
-* [EnvReader and EnvFileReader](docs/Env.md) - Readers for ENV input (file reader requires `symfony/dotenv`)
-* [JsonReader and JsonFileReader](docs/Json.md) - Readers for JSON input
-* [NeonReader and NeonFileReader](docs/Neon.md) - Reader for NEON input (requires `nette/neon`)
-* [YamlReader and YamlFileReader](docs/Yaml.md) - Readers for YAML input (requires `symfony/yaml`)
-* [DirectoryReader](docs/Directory.md) - Reads and merges all supported configuration files in directory
-
-## The `ConfigurationFactory` class
-
-The `Phrity\Config\ConfigurationFactory` provides shortcuts to create and merge configurations.
-
-```php
-$factory = new Phrity\Config\ConfigurationFactory();
-
-$configData = $factory->fromData(data: ['a' => 23]);
-$configJson = $factory->fromJson(json: '{"a": 23}');
-$configJsonFile = $factory->fromJsonFile(path: 'path/to/config.json');
-$configYaml = $factory->fromYaml(yaml: 'n: 23');
-$configYamlFile = $factory->fromYamlFile(path: 'path/to/config.yaml');
-$configNeon = $factory->fromNeon(neon: 'n: 23');
-$configNeonFile = $factory->fromNeonFile(path: 'path/to/config.neon');
-$configEnv = $factory->fromEnv();
-$configEnvFile = $factory->fromEnvFile('.env');
-$configDirectory = $factory->fromDirectory('path/to/config/*json');
-
-$configMerged = $factory->merge(
-    $configData,
-    $configJson,
-    $configJsonFile,
-    $configYaml,
-    $configYamlFile,
-    $configNeon,
-    $configNeonFile,
-    $configEnv,
-    $configEnvFile,
-    $configDirectory,
-);
-```
-
-## Versions
-
-| Version | PHP | |
-| --- | --- | --- |
-| `1.6` | `^8.1` | Reader (directory) |
-| `1.5` | `^8.1` | Readers (neon, neon-file), improved transformer |
-| `1.4` | `^8.1` | Transfomers |
-| `1.3` | `^8.1` | Coerce option |
-| `1.2` | `^8.1` | Reader (data), all file-readers get `optional` option |
-| `1.1` | `^8.1` | Readers (yaml, env-file) |
-| `1.0` | `^8.1` | Interface, implementation, readers (json, json-file, yaml-file, env), factory |

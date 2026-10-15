@@ -31,6 +31,16 @@ class ConfigurationFactory
         $this->optional = $optional;
     }
 
+    public function merge(ConfigurationInterface ...$configurations): ConfigurationInterface
+    {
+        return array_reduce($configurations, function (ConfigurationInterface $carry, ConfigurationInterface $item) {
+            return $carry->merge($item);
+        }, new $this->class((object)[]));
+    }
+
+
+    /* ---------- Reader methods ----------------------------------------------------------------------------------- */
+
     /**
      * @param object|array<mixed>|null $data
      */
@@ -157,10 +167,18 @@ class ConfigurationFactory
         return $reader->createConfiguration(path: $path);
     }
 
-    public function merge(ConfigurationInterface ...$configurations): ConfigurationInterface
-    {
-        return array_reduce($configurations, function (ConfigurationInterface $carry, ConfigurationInterface $item) {
-            return $carry->merge($item);
-        }, new $this->class((object)[]));
+
+    /* ---------- Writer methods ----------------------------------------------------------------------------------- */
+
+    public function toJsonFile(
+        ConfigurationInterface $configuration,
+        string $path,
+        bool $pretty = false,
+    ): void {
+        $writer = new JsonFileWriter(
+            prefix: $this->prefix,
+            pretty: $pretty,
+        );
+        $writer->writeConfiguration(configuration: $configuration, path: $path);
     }
 }
