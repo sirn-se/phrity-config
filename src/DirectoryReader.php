@@ -23,11 +23,12 @@ class DirectoryReader implements ReaderInterface
         array|null $readers = null,
     ) {
         $this->class = $class;
-        $this->readers = $readers ?? [
+        $defaultReaders = [
             'json' => JsonFileReader::class,
             'neon' => NeonFileReader::class,
             'yaml' => YamlFileReader::class,
         ];
+        $this->readers = $readers ?? $defaultReaders;
     }
 
     /**

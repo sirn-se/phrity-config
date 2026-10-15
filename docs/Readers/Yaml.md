@@ -1,16 +1,18 @@
-[Documentation](../README.md) / JSON
+[Documentation](../README.md) / Readers / YAML
 
-# JSON readers
+# YAML readers
 
-Readers for JSON input.
+Readers for YAML input.
 
-## The JsonReader
+⚠️ YAML readers require [`symfony/yaml`](https://packagist.org/packages/symfony/yaml) to be installed
+
+## The YamlReader
 
 ```php
-$reader = new JsonReader();
+$reader = new YamlReader();
 
-// Read from JSON string
-$configuration = $reader->createConfiguration('{"a": 1}');
+// Read from YAML string
+$configuration = $reader->createConfiguration('a: 1');
 ```
 
 ### Constructor options
@@ -27,19 +29,19 @@ public function __construct(
 
 ```php
 public function createConfiguration(
-    string $json = '{}',
+    string $yaml = '{}',
 ): ConfigurationInterface;
 ```
 
-* `json` - JSON string to parse.
+* `yaml` - YAML string to parse.
 
-## The JsonFileReader
+## The YamlFileReader
 
 ```php
-$reader = new JsonFileReader();
+$reader = new YamlFileReader();
 
 // Read from file
-$configuration = $reader->createConfiguration(path: 'path/to/file.json');
+$configuration = $reader->createConfiguration(path: 'path/to/file.yaml');
 ```
 
 ### Constructor options
@@ -60,7 +62,7 @@ public function __construct(
 
 ```php
 public function createConfiguration(
-    string $path = 'config.json',
+    string $path = 'config.yaml',
 ): ConfigurationInterface;
 ```
 

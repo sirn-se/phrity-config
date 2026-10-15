@@ -1,17 +1,17 @@
-[Documentation](../README.md) / YAML
+[Documentation](../README.md) / Readers / NEON
 
-# YAML readers
+# NEON readers
 
-Readers for YAML input.
+Readers for NEON input.
 
-⚠️ YAML readers require [`symfony/yaml`](https://packagist.org/packages/symfony/yaml) to be installed
+⚠️ NEON readers require [`nette/neon`](https://packagist.org/packages/nette/neon) to be installed
 
-## The YamlReader
+## The NeonReader
 
 ```php
-$reader = new YamlReader();
+$reader = new NeonReader();
 
-// Read from YAML string
+// Read from Neon string
 $configuration = $reader->createConfiguration('a: 1');
 ```
 
@@ -29,19 +29,19 @@ public function __construct(
 
 ```php
 public function createConfiguration(
-    string $yaml = '{}',
+    string $neon = '{}',
 ): ConfigurationInterface;
 ```
 
-* `yaml` - YAML string to parse.
+* `neon` - NEON string to parse.
 
-## The YamlFileReader
+## The NeonFileReader
 
 ```php
-$reader = new YamlFileReader();
+$reader = new NeonFileReader();
 
 // Read from file
-$configuration = $reader->createConfiguration(path: 'path/to/file.yaml');
+$configuration = $reader->createConfiguration(path: 'path/to/file.neon');
 ```
 
 ### Constructor options
@@ -62,7 +62,7 @@ public function __construct(
 
 ```php
 public function createConfiguration(
-    string $path = 'config.yaml',
+    string $path = 'config.neon',
 ): ConfigurationInterface;
 ```
 

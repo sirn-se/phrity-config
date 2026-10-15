@@ -1,18 +1,16 @@
-[Documentation](../README.md) / NEON
+[Documentation](../README.md) / Readers / JSON
 
-# NEON readers
+# JSON readers
 
-Readers for NEON input.
+Readers for JSON input.
 
-⚠️ NEON readers require [`nette/neon`](https://packagist.org/packages/nette/neon) to be installed
-
-## The NeonReader
+## The JsonReader
 
 ```php
-$reader = new NeonReader();
+$reader = new JsonReader();
 
-// Read from Neon string
-$configuration = $reader->createConfiguration('a: 1');
+// Read from JSON string
+$configuration = $reader->createConfiguration('{"a": 1}');
 ```
 
 ### Constructor options
@@ -29,19 +27,19 @@ public function __construct(
 
 ```php
 public function createConfiguration(
-    string $neon = '{}',
+    string $json = '{}',
 ): ConfigurationInterface;
 ```
 
-* `neon` - NEON string to parse.
+* `json` - JSON string to parse.
 
-## The NeonFileReader
+## The JsonFileReader
 
 ```php
-$reader = new NeonFileReader();
+$reader = new JsonFileReader();
 
 // Read from file
-$configuration = $reader->createConfiguration(path: 'path/to/file.neon');
+$configuration = $reader->createConfiguration(path: 'path/to/file.json');
 ```
 
 ### Constructor options
@@ -62,7 +60,7 @@ public function __construct(
 
 ```php
 public function createConfiguration(
-    string $path = 'config.neon',
+    string $path = 'config.json',
 ): ConfigurationInterface;
 ```
 
