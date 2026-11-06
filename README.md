@@ -37,7 +37,7 @@ Support merging.
 $merged = $config->merge(new Configuration($data));
 ```
 
-Read more on [Configuration](docs/Configuration.md).
+Read more on [Configuration](docs/Configuration/Configuration.md).
 
 ## Writable configuration
 
@@ -48,7 +48,7 @@ $config->set('opt1', 123);
 $config->with('opt1', 123);
 ```
 
-Read more on [WritableConfiguration](docs/WritableConfiguration.md).
+Read more on [WritableConfiguration](docs/Configuration/WritableConfiguration.md).
 
 ## Reader classes
 
@@ -67,6 +67,7 @@ List of available readers:
 * [JsonReader and JsonFileReader](docs/Readers/Json.md) - Readers for JSON input
 * [NeonReader and NeonFileReader](docs/Readers/Neon.md) - Reader for NEON input (requires `nette/neon`)
 * [YamlReader and YamlFileReader](docs/Readers/Yaml.md) - Readers for YAML input (requires `symfony/yaml`)
+* [XmlReader and XmlFileReader](docs/Readers/Xml.md) - Readers for XML input (requires `libxml`)
 
 ## Writer classes
 
@@ -90,5 +91,5 @@ $factory = new ConfigurationFactory();
 $config = $factory->fromJsonFile(path: 'path/to/config.json');
 ```
 
-Read more on [ConfigurationFactory](docs/ConfigurationFactory.md).
+Read more on [ConfigurationFactory](docs/Configuration/ConfigurationFactory.md).
 

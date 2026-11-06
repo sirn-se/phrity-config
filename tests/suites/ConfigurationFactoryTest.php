@@ -71,6 +71,21 @@ class ConfigurationFactoryTest extends TestCase
         $this->assertInstanceOf(ConfigurationInterface::class, $config);
     }
 
+    public function testFromNXml(): void
+    {
+        $factory = new ConfigurationFactory();
+        $config = $factory->fromXml('<a><b>B</b></a>');
+        $this->assertInstanceOf(ConfigurationInterface::class, $config);
+    }
+
+    public function testFromNXmlFile(): void
+    {
+        $factory = new ConfigurationFactory();
+        $config = $factory->fromXmlFile(path: __DIR__ . '/../fixtures/valid.xml');
+        $this->assertInstanceOf(ConfigurationInterface::class, $config);
+    }
+
+
     public function testFromEnv(): void
     {
         $factory = new ConfigurationFactory();

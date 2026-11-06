@@ -1,8 +1,8 @@
-[Documentation](../README.md) / Configuration
+[Documentation](../README.md) / Configuration / Configuration
 
 # Configuration
 
-The `Phrity\Config\Configuration` class implements the `[ConfigurationInterface](ConfigurationInterface.md)`.
+The `Phrity\Config\Configuration` class implements the [ConfigurationInterface](ConfigurationInterface.md).
 
 ```php
 use Phrity\Config\Configuration;

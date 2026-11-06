@@ -116,6 +116,27 @@ class ConfigurationFactory
         return $reader->createConfiguration(path: $path);
     }
 
+    public function fromXml(
+        string $xml,
+    ): ConfigurationInterface {
+        $reader = new XmlReader(
+            class: $this->class,
+        );
+        return $reader->createConfiguration(xml: $xml);
+    }
+
+    public function fromXmlFile(
+        string $path,
+        bool|null $optional = null,
+    ): ConfigurationInterface {
+        $reader = new XmlFileReader(
+            class: $this->class,
+            prefix: $this->prefix,
+            optional: $optional ?? $this->optional,
+        );
+        return $reader->createConfiguration(path: $path);
+    }
+
     /**
      * @param string|null $separator
      * @param array<mixed>|null $match
