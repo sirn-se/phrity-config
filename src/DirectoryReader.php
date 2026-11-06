@@ -27,6 +27,7 @@ class DirectoryReader implements ReaderInterface
             'json' => JsonFileReader::class,
             'neon' => NeonFileReader::class,
             'yaml' => YamlFileReader::class,
+            'xml' => XmlFileReader::class,
         ];
         $this->readers = $readers ?? $defaultReaders;
     }

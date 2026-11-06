@@ -31,6 +31,7 @@ Default readers are;
     'json' => JsonFileReader::class,
     'neon' => NeonFileReader::class,
     'yaml' => YamlFileReader::class,
+    'xml' => XmlFileReader::class,
 ],
 ```
 
