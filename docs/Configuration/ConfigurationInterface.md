@@ -1,4 +1,4 @@
-[Documentation](../README.md) / ConfigurationInterface
+[Documentation](../README.md) / Configuration / ConfigurationInterface
 
 # Configuration interface
 

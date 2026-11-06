@@ -1,4 +1,4 @@
-[Documentation](../README.md) / ConfigurationFactory
+[Documentation](../README.md) / Configuration / ConfigurationFactory
 
 # Configuration factory
 
@@ -16,6 +16,8 @@ $configYaml = $factory->fromYaml(yaml: 'n: 23');
 $configYamlFile = $factory->fromYamlFile(path: 'path/to/config.yaml');
 $configNeon = $factory->fromNeon(neon: 'n: 23');
 $configNeonFile = $factory->fromNeonFile(path: 'path/to/config.neon');
+$configXml = $factory->fromXml(xml: '<a><b>Hello</b></a>');
+$configXmlFile = $factory->fromXmlFile(path: 'path/to/config.xml');
 $configEnv = $factory->fromEnv();
 $configEnvFile = $factory->fromEnvFile('.env');
 $configDirectory = $factory->fromDirectory('path/to/config/*json');
@@ -34,6 +36,8 @@ $configMerged = $factory->merge(
     $configYamlFile,
     $configNeon,
     $configNeonFile,
+    $configXml,
+    $configXmlFile
     $configEnv,
     $configEnvFile,
     $configDirectory,

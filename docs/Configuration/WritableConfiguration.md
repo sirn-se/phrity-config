@@ -1,8 +1,8 @@
-[Documentation](../README.md) / WritableConfiguration
+[Documentation](../README.md) / Configuration / WritableConfiguration
 
 # Writable Configuration
 
-The `Phrity\Config\WritableConfiguration` class implements the `[ConfigurationInterface](ConfigurationInterface.md)`.
+The `Phrity\Config\WritableConfiguration` class implements the [ConfigurationInterface](ConfigurationInterface.md).
 Identical to Configuration but also support writing values on the configuration.
 
 ```php

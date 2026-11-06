@@ -11,7 +11,6 @@ class DirectoryReaderTest extends TestCase
 {
     public function setUp(): void
     {
-        $GLOBALS['class_exists'] = true;
         $GLOBALS['is_readable'] = true;
     }
 
@@ -33,6 +32,10 @@ class DirectoryReaderTest extends TestCase
             'a' => (object)[
                 'a' => 1,
                 'b' => 2,
+                'd' => [
+                    'D1',
+                    'D2',
+                ],
             ],
             'b' => 66,
         ], $config->jsonSerialize());

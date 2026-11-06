@@ -40,3 +40,10 @@ function file_put_contents(string $filename, mixed $data, int $flags = 0): bool
         ? $GLOBALS['file_put_contents']
         : \file_put_contents($filename, $data, $flags);
 }
+
+function extension_loaded(string $extension): bool
+{
+    return isset($GLOBALS['extension_loaded'])
+        ? $GLOBALS['extension_loaded']
+        : \extension_loaded($extension);
+}

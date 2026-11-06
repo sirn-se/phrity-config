@@ -12,7 +12,6 @@ class NeonReaderTest extends TestCase
     public function setUp(): void
     {
         $GLOBALS['class_exists'] = true;
-        $GLOBALS['is_readable'] = true;
     }
 
     public function testNeonReader(): void

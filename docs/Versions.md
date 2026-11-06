@@ -4,6 +4,7 @@
 
 | Version | PHP | |
 | --- | --- | --- |
+| `1.8` | `^8.1` | Reader (xml, xml-file) |
 | `1.7` | `^8.1` | Writable configuration, Writer (json) |
 | `1.6` | `^8.1` | Reader (directory) |
 | `1.5` | `^8.1` | Readers (neon, neon-file), improved transformer |
